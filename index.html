@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spiritual Quote Search</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2/dist/fuse.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #121212;
+            --card-bg: #1e1e1e;
+            --text-color: #e0e0e0;
+            --accent: #ffd54f;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 2rem;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--accent);
+            margin-bottom: 2rem;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 2rem;
+            border-radius: 8px;
+            border: none;
+            background: #2a2a2a;
+            color: var(--text-color);
+            font-size: 1rem;
+        }
+
+        input[type="text"]::placeholder {
+            color: #888;
+        }
+
+        .quote-card {
+            background: var(--card-bg);
+            border-left: 4px solid var(--accent);
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .quote-card:hover {
+            transform: scale(1.02);
+            border-color: #ffeb3b;
+        }
+
+        .statement {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .ref {
+            font-size: 0.9rem;
+            color: #bbb;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.85);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: url('images.jpg') no-repeat center center;
+            background-size: cover;
+            padding: 3rem 2rem;
+            max-width: 90%;
+            color: white;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
+            font-size: 1.4rem;
+            text-align: center;
+            border-radius: 20px;
+            line-height: 1.6;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 2rem;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Spiritual Quote Search</h1>
+        <input type="text" id="search" placeholder="Search by keyword, tag, or similar sentence...">
+        <div id="results"></div>
+    </div>
+
+    <div class="modal" id="quoteModal">
+        <div class="modal-close" onclick="closeModal()">&times;</div>
+        <div class="modal-content" id="modalContent"></div>
+    </div>
+
+    <script>
+        function openModal(content) {
+            document.getElementById('modalContent').innerText = content;
+            document.getElementById('quoteModal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('quoteModal').style.display = 'none';
+        }
+
+        async function loadQuotes() {
+            const res = await fetch('quotes.json');
+            const data = await res.json();
+
+            const fuse = new Fuse(
+                data.flatMap(entry => entry.statements.map(statement => ({
+                    ...statement,
+                    ref: entry.ref
+                }))),
+                {
+                    keys: ["statement", "tags", "keywords", "similar_sentences"],
+                    threshold: 0.3
+                }
+            );
+
+            const input = document.getElementById('search');
+            const resultsContainer = document.getElementById('results');
+
+            input.addEventListener('input', () => {
+                const searchTerm = input.value;
+                const results = fuse.search(searchTerm);
+
+                resultsContainer.innerHTML = '';
+
+                results.forEach(({ item }) => {
+                    const card = document.createElement('div');
+                    card.className = 'quote-card';
+                    card.innerHTML = `
+            <div class="statement">“${item.statement}”</div>
+            <div class="ref">— ${item.ref}</div>
+          `;
+                    card.addEventListener('click', () => {
+                        openModal(`${item.statement}\n\n— ${item.ref}`);
+                    });
+                    resultsContainer.appendChild(card);
+                });
+            });
+        }
+
+        loadQuotes();
+    </script>
+</body>
+
+</html>
