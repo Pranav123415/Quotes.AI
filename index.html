@@ -5,11 +5,10 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Spiritual Quote Search</title>
-    <!-- Favicon declarations -->
+    <!-- Favicon declarations with versioning and Base64 fallback -->
     <link rel="icon" href="favicon.ico?v=1" type="image/x-icon" />
     <link rel="shortcut icon" href="favicon.ico?v=1" type="image/x-icon" />
     <link rel="apple-touch-icon" href="favicon.ico?v=1" />
-    <!-- Inline Base64 fallback favicon (this is a simple black square icon; replace with your own if desired) -->
     <link rel="icon" type="image/x-icon"
         href="data:image/x-icon;base64,AAABAAEAEBAAAAAAAABoAwAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////AAD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A" />
     <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2/dist/fuse.min.js"></script>
@@ -117,7 +116,8 @@
         .modal-content {
             position: relative;
             width: 90vw;
-            height: 90vh;
+            height: 90vw;
+            /* maintain square shape based on viewport */
             max-width: 800px;
             max-height: 800px;
             border-radius: 15px;
@@ -130,16 +130,12 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            object-fit: contain;
+            object-fit: cover;
         }
 
+        /* Hide the overlay to remove the black layer between image and text */
         .overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            display: none;
         }
 
         .quote-text {
@@ -152,10 +148,12 @@
             font-size: 1.4rem;
             line-height: 1.6;
             text-align: center;
-            max-height: 50%;
+            max-height: 40%;
             overflow-y: auto;
             z-index: 2;
             box-sizing: border-box;
+            background: transparent;
+            /* remove dark background behind the text */
         }
 
         .modal-close {
@@ -167,6 +165,19 @@
             color: #fff;
             cursor: pointer;
             user-select: none;
+        }
+
+        /* Mobile adjustments */
+        @media (max-width: 600px) {
+            .modal-content {
+                width: 95vw;
+                height: 95vw;
+            }
+
+            .quote-text {
+                font-size: 1.2rem;
+                padding: 1rem;
+            }
         }
     </style>
 </head>
@@ -180,6 +191,7 @@
     <div class="modal" id="quoteModal">
         <div class="modal-content">
             <img src="bg.jpg" alt="Background" class="bg-image" />
+            <!-- Overlay element is hidden -->
             <div class="overlay"></div>
             <div class="quote-text" id="modalContent"></div>
             <div class="modal-close" onclick="closeModal()">&times;</div>
