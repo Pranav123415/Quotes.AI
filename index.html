@@ -76,45 +76,75 @@
         }
 
         .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.85);
-            justify-content: center;
-            align-items: center;
-        }
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85);
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s ease-in-out;
+}
 
-        .modal-content {
-            background: url('images.jpg') no-repeat center center;
-            background-size: cover;
-            padding: 3rem 2rem;
-            max-width: 90%;
-            color: white;
-            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.8);
-            font-size: 1.4rem;
-            text-align: center;
-            border-radius: 20px;
-            line-height: 1.6;
-        }
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
 
-        .modal-close {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            font-size: 2rem;
-            color: white;
-            cursor: pointer;
-        }
+.modal-content {
+  position: relative;
+  background-image: url('images.jpg');
+  background-size: cover;
+  background-position: center;
+  width: 90%;
+  max-width: 720px;
+  padding: 2.5rem;
+  border-radius: 20px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
+  overflow: hidden;
+}
+
+.modal-content::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.6); /* overlay for readability */
+  border-radius: 20px;
+}
+
+.modal-content > * {
+  position: relative;
+  z-index: 1;
+}
+
+#modalContent {
+  color: #fff;
+  font-size: 1.4rem;
+  line-height: 1.8;
+  font-family: 'Georgia', serif;
+  text-align: center;
+  white-space: pre-line;
+  text-shadow: 1px 1px 6px rgba(0,0,0,0.5);
+}
+
+.modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 1.2rem;
+  font-size: 2rem;
+  color: white;
+  cursor: pointer;
+  z-index: 2;
+}
     </style>
 </head>
 
 <body>
     <div class="container">
-        <h1>Spiritual Quote Search</h1>
+        <h1>Srila Prabhupada Quote </h1>
         <input type="text" id="search" placeholder="Search by keyword, tag, or similar sentence...">
         <div id="results"></div>
     </div>
