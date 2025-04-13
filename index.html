@@ -5,12 +5,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Spiritual Quote Search</title>
-    <!-- Favicon declarations with versioning and Base64 fallback -->
     <link rel="icon" href="favicon.ico?v=1" type="image/x-icon" />
-    <link rel="shortcut icon" href="favicon.ico?v=1" type="image/x-icon" />
     <link rel="apple-touch-icon" href="favicon.ico?v=1" />
-    <link rel="icon" type="image/x-icon"
-        href="data:image/x-icon;base64,AAABAAEAEBAAAAAAAABoAwAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA////AAD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A////AP///wD///8A" />
     <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2/dist/fuse.min.js"></script>
     <style>
         :root {
@@ -50,14 +46,16 @@
             padding: 12px;
             margin-bottom: 2rem;
             border-radius: 8px;
-            border: none;
-            background: #2a2a2a;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.05);
             color: var(--text-color);
             font-size: 1rem;
+            box-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(4px);
         }
 
         input[type="text"]::placeholder {
-            color: #888;
+            color: #aaa;
         }
 
         .quote-card {
@@ -116,10 +114,9 @@
         .modal-content {
             position: relative;
             width: 90vw;
-            height: 90vw;
-            /* maintain square shape based on viewport */
+            height: 90vh;
             max-width: 800px;
-            max-height: 800px;
+            max-height: 90vh;
             border-radius: 15px;
             overflow: hidden;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
@@ -130,20 +127,23 @@
             position: absolute;
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
         }
 
-        /* Hide the overlay to remove the black layer between image and text */
+        /* Remove the overlay (or you can leave it hidden if not needed) */
         .overlay {
             display: none;
         }
 
+        /* Updated text styling for better readability */
         .quote-text {
             position: absolute;
             bottom: 0;
             left: 0;
             right: 0;
-            padding: 2rem;
+            padding: 1rem 1.5rem;
+            background: rgba(0, 0, 0, 0.5);
+            /* semi-transparent background behind text */
             color: #fff;
             font-size: 1.4rem;
             line-height: 1.6;
@@ -152,8 +152,9 @@
             overflow-y: auto;
             z-index: 2;
             box-sizing: border-box;
-            background: transparent;
-            /* remove dark background behind the text */
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
         }
 
         .modal-close {
@@ -167,11 +168,10 @@
             user-select: none;
         }
 
-        /* Mobile adjustments */
         @media (max-width: 600px) {
             .modal-content {
                 width: 95vw;
-                height: 95vw;
+                height: 95vh;
             }
 
             .quote-text {
@@ -188,15 +188,16 @@
         <input type="text" id="search" placeholder="Search by keyword, tag, or similar sentence..." />
         <div id="results"></div>
     </div>
+
     <div class="modal" id="quoteModal">
         <div class="modal-content">
             <img src="bg.jpg" alt="Background" class="bg-image" />
-            <!-- Overlay element is hidden -->
             <div class="overlay"></div>
             <div class="quote-text" id="modalContent"></div>
             <div class="modal-close" onclick="closeModal()">&times;</div>
         </div>
     </div>
+
     <script>
         function renderResults(data) {
             const resultsContainer = document.getElementById("results");
@@ -214,14 +215,17 @@
                 resultsContainer.appendChild(card);
             });
         }
+
         function openModal(content) {
             const modalContentDiv = document.getElementById("modalContent");
             modalContentDiv.innerHTML = content;
             document.getElementById("quoteModal").style.display = "flex";
         }
+
         function closeModal() {
             document.getElementById("quoteModal").style.display = "none";
         }
+
         fetch("quotes.json")
             .then((response) => response.json())
             .then((quotesData) => {
@@ -234,10 +238,12 @@
                         });
                     });
                 });
+
                 const fuse = new Fuse(flatQuotes, {
                     keys: ["statement", "keywords", "tags"],
                     threshold: 0.3,
                 });
+
                 document.getElementById("search").addEventListener("input", function (e) {
                     const term = e.target.value;
                     const results = term
@@ -245,6 +251,7 @@
                         : flatQuotes;
                     renderResults(results);
                 });
+
                 renderResults(flatQuotes);
             })
             .catch((error) => console.error("Error loading quotes:", error));
