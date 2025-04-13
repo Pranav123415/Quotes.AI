@@ -84,7 +84,21 @@
             color: #bbb;
         }
 
-        /* Modal Styles */
+        .share-button {
+            background: none;
+            border: none;
+            color: var(--accent);
+            cursor: pointer;
+            font-size: 1rem;
+            padding: 0.3rem;
+            margin-top: 0.5rem;
+            display: inline-block;
+        }
+
+        .share-button:hover {
+            text-decoration: underline;
+        }
+
         .modal {
             display: none;
             position: fixed;
@@ -115,7 +129,6 @@
             position: relative;
             width: 90vw;
             height: 90vw;
-            /* maintain a square for consistent aspect ratio */
             max-width: 800px;
             max-height: 800px;
             border-radius: 15px;
@@ -124,7 +137,6 @@
             background: #000;
         }
 
-        /* Use the picture element to load different images based on screen width */
         .bg-picture {
             position: absolute;
             width: 100%;
@@ -138,7 +150,6 @@
             object-fit: cover;
         }
 
-        /* Text overlay styling */
         .quote-text {
             position: absolute;
             bottom: 0;
@@ -170,7 +181,6 @@
             user-select: none;
         }
 
-        /* Mobile adjustments */
         @media (max-width: 600px) {
             .modal-content {
                 width: 95vw;
@@ -192,9 +202,10 @@
         <input type="text" id="search" placeholder="Search by keyword, tag, or similar sentence..." />
         <div id="results"></div>
     </div>
+
+    <!-- Modal -->
     <div class="modal" id="quoteModal">
         <div class="modal-content">
-            <!-- Picture element for responsive background image -->
             <picture class="bg-picture">
                 <source media="(max-width:600px)" srcset="bg-mobile.jpg">
                 <source media="(min-width:601px)" srcset="bg.jpg">
@@ -204,6 +215,7 @@
             <div class="modal-close" onclick="closeModal()">&times;</div>
         </div>
     </div>
+
     <script>
         function renderResults(data) {
             const resultsContainer = document.getElementById("results");
@@ -214,37 +226,75 @@
                 card.innerHTML = `
           <div class="statement">“${item.statement}”</div>
           <div class="ref">— ${item.ref}</div>
+          <button class="share-button" data-id="${item.id}">🔗 Share</button>
         `;
+                // Open modal on card click
                 card.addEventListener("click", () =>
                     openModal(`${item.statement}<br><br>— ${item.ref}`)
                 );
+                // Share button with mobile-safe fallback
+                card.querySelector(".share-button").addEventListener("click", function (e) {
+                    e.stopPropagation();
+                    const quoteId = e.target.dataset.id;
+                    const shareUrl = `${window.location.origin}${window.location.pathname}?quote=${quoteId}`;
+
+                    if (navigator.clipboard && window.isSecureContext) {
+                        navigator.clipboard.writeText(shareUrl)
+                            .then(() => alert("Quote link copied to clipboard!"))
+                            .catch(() => fallbackCopy(shareUrl));
+                    } else {
+                        fallbackCopy(shareUrl);
+                    }
+                });
                 resultsContainer.appendChild(card);
             });
         }
+
+        function fallbackCopy(text) {
+            const tempInput = document.createElement("input");
+            tempInput.value = text;
+            document.body.appendChild(tempInput);
+            tempInput.select();
+            try {
+                document.execCommand("copy");
+                alert("Quote link copied (fallback)!");
+            } catch (err) {
+                alert("Please copy this link manually:\n" + text);
+            }
+            document.body.removeChild(tempInput);
+        }
+
         function openModal(content) {
-            const modalContentDiv = document.getElementById("modalContent");
-            modalContentDiv.innerHTML = content;
+            document.getElementById("modalContent").innerHTML = content;
             document.getElementById("quoteModal").style.display = "flex";
         }
+
         function closeModal() {
             document.getElementById("quoteModal").style.display = "none";
         }
+
+        // Load JSON and setup
         fetch("quotes.json")
             .then((response) => response.json())
             .then((quotesData) => {
                 const flatQuotes = [];
                 quotesData.forEach((entry) => {
-                    entry.statements.forEach((item) => {
+                    entry.statements.forEach((item, index) => {
+                        if (!item.id) {
+                            item.id = entry.ref.replace(/\s+/g, '') + "-" + index;
+                        }
                         flatQuotes.push({
                             ...item,
                             ref: entry.ref,
                         });
                     });
                 });
+
                 const fuse = new Fuse(flatQuotes, {
                     keys: ["statement", "keywords", "tags"],
                     threshold: 0.3,
                 });
+
                 document.getElementById("search").addEventListener("input", function (e) {
                     const term = e.target.value;
                     const results = term
@@ -252,7 +302,18 @@
                         : flatQuotes;
                     renderResults(results);
                 });
+
                 renderResults(flatQuotes);
+
+                // Auto-open quote by ID
+                const urlParams = new URLSearchParams(window.location.search);
+                const quoteId = urlParams.get("quote");
+                if (quoteId) {
+                    const match = flatQuotes.find(q => q.id === quoteId);
+                    if (match) {
+                        openModal(`${match.statement}<br><br>— ${match.ref}`);
+                    }
+                }
             })
             .catch((error) => console.error("Error loading quotes:", error));
     </script>
