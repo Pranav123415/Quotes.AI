@@ -114,47 +114,49 @@
         .modal-content {
             position: relative;
             width: 90vw;
-            height: 90vh;
+            height: 90vw;
+            /* maintain a square for consistent aspect ratio */
             max-width: 800px;
-            max-height: 90vh;
+            max-height: 800px;
             border-radius: 15px;
             overflow: hidden;
             box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
             background: #000;
         }
 
-        .bg-image {
+        /* Use the picture element to load different images based on screen width */
+        .bg-picture {
             position: absolute;
             width: 100%;
             height: 100%;
-            object-fit: contain;
+            z-index: 1;
         }
 
-        /* Remove the overlay (or you can leave it hidden if not needed) */
-        .overlay {
-            display: none;
+        .bg-picture img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
         }
 
-        /* Updated text styling for better readability */
+        /* Text overlay styling */
         .quote-text {
             position: absolute;
             bottom: 0;
             left: 0;
             right: 0;
+            z-index: 2;
             padding: 1rem 1.5rem;
             background: rgba(0, 0, 0, 0.5);
-            /* semi-transparent background behind text */
             color: #fff;
             font-size: 1.4rem;
             line-height: 1.6;
             text-align: center;
-            max-height: 40%;
-            overflow-y: auto;
-            z-index: 2;
             box-sizing: border-box;
             border-top-left-radius: 10px;
             border-top-right-radius: 10px;
             text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
+            max-height: 40%;
+            overflow-y: auto;
         }
 
         .modal-close {
@@ -168,15 +170,17 @@
             user-select: none;
         }
 
+        /* Mobile adjustments */
         @media (max-width: 600px) {
             .modal-content {
                 width: 95vw;
-                height: 95vh;
+                height: 95vw;
             }
 
             .quote-text {
                 font-size: 1.2rem;
-                padding: 1rem;
+                padding: 0.8rem 1rem;
+                max-height: 35%;
             }
         }
     </style>
@@ -184,20 +188,22 @@
 
 <body>
     <div class="container">
-        <h1>Hare Krishna Mohana Prabhuji😊,PAMHO🙇</h1>
+        <h1>Hare Krishna Mohana Prabhuji 😊, PAMHO 🙇</h1>
         <input type="text" id="search" placeholder="Search by keyword, tag, or similar sentence..." />
         <div id="results"></div>
     </div>
-
     <div class="modal" id="quoteModal">
         <div class="modal-content">
-            <img src="bg.jpg" alt="Background" class="bg-image" />
-            <div class="overlay"></div>
+            <!-- Picture element for responsive background image -->
+            <picture class="bg-picture">
+                <source media="(max-width:600px)" srcset="bg-mobile.jpg">
+                <source media="(min-width:601px)" srcset="bg.jpg">
+                <img src="bg.jpg" alt="Background">
+            </picture>
             <div class="quote-text" id="modalContent"></div>
             <div class="modal-close" onclick="closeModal()">&times;</div>
         </div>
     </div>
-
     <script>
         function renderResults(data) {
             const resultsContainer = document.getElementById("results");
@@ -215,17 +221,14 @@
                 resultsContainer.appendChild(card);
             });
         }
-
         function openModal(content) {
             const modalContentDiv = document.getElementById("modalContent");
             modalContentDiv.innerHTML = content;
             document.getElementById("quoteModal").style.display = "flex";
         }
-
         function closeModal() {
             document.getElementById("quoteModal").style.display = "none";
         }
-
         fetch("quotes.json")
             .then((response) => response.json())
             .then((quotesData) => {
@@ -238,12 +241,10 @@
                         });
                     });
                 });
-
                 const fuse = new Fuse(flatQuotes, {
                     keys: ["statement", "keywords", "tags"],
                     threshold: 0.3,
                 });
-
                 document.getElementById("search").addEventListener("input", function (e) {
                     const term = e.target.value;
                     const results = term
@@ -251,7 +252,6 @@
                         : flatQuotes;
                     renderResults(results);
                 });
-
                 renderResults(flatQuotes);
             })
             .catch((error) => console.error("Error loading quotes:", error));
