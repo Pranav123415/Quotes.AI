@@ -7,7 +7,15 @@
     <title>Srila Prabhupada Quotes</title>
     <link rel="icon" href="favicon.ico?v=1" type="image/x-icon" />
     <link rel="apple-touch-icon" href="favicon.ico?v=1" />
+
+    <!-- External Libraries -->
+    <!-- Fuse.js for fuzzy matching fallback -->
     <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2/dist/fuse.min.js"></script>
+    <!-- TensorFlow.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.11.0/dist/tf.min.js"></script>
+    <!-- Universal Sentence Encoder -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/universal-sentence-encoder@1.3.3"></script>
+
     <style>
         :root {
             --bg-color: #121212;
@@ -199,11 +207,12 @@
 <body>
     <div class="container">
         <h1>Hare Krishna Mohana Prabhuji 😊, PAMHO 🙇</h1>
-        <input type="text" id="search" placeholder="Search by keyword, tag, or similar sentence..." />
+        <input type="text" id="search"
+            placeholder="Search by keyword, tag, date, location, or any part of the quote..." />
         <div id="results"></div>
     </div>
 
-    <!-- Modal -->
+    <!-- Modal for detailed quote view -->
     <div class="modal" id="quoteModal">
         <div class="modal-content">
             <picture class="bg-picture">
@@ -212,32 +221,57 @@
                 <img src="bg.jpg" alt="Background">
             </picture>
             <div class="quote-text" id="modalContent"></div>
-            <div class="modal-close" onclick="closeModal()">&times;</div>
+            <div class="modal-close" onclick="closeModal()">×</div>
         </div>
     </div>
 
     <script>
+        // Global arrays for quotes and embeddings
+        let flatQuotes = [];
+        let quoteEmbeddings = [];
+        let model;  // Universal Sentence Encoder model
+        let fuse;   // Fuse.js instance for fallback search
+
+        // Compute cosine similarity between two tensors
+        function cosineSimilarity(a, b) {
+            return tf.tidy(() => {
+                // Make sure both tensors are 2D for proper dot product
+                const a2D = a.reshape([1, -1]);
+                const b2D = b.reshape([1, -1]);
+
+                // Calculate cosine similarity: dot(a, b) / (||a|| * ||b||)
+                const dotProduct = a2D.matMul(b2D.transpose()).dataSync()[0];
+                const normA = a2D.norm().dataSync()[0];
+                const normB = b2D.norm().dataSync()[0];
+
+                return dotProduct / (normA * normB);
+            });
+        }
+
+        // Render quotes in the results container
         function renderResults(data) {
             const resultsContainer = document.getElementById("results");
             resultsContainer.innerHTML = "";
-            data.forEach((item) => {
+            if (data.length === 0) {
+                resultsContainer.innerHTML = "<p>No matching quotes found.</p>";
+                return;
+            }
+            data.forEach(item => {
                 const card = document.createElement("div");
                 card.className = "quote-card";
                 card.innerHTML = `
-          <div class="statement">“${item.statement}”</div>
+          <div class="statement">"${item.statement}"</div>
           <div class="ref">— ${item.ref}</div>
           <button class="share-button" data-id="${item.id}">🔗 Share</button>
         `;
-                // Open modal on card click
-                card.addEventListener("click", () =>
-                    openModal(`${item.statement}<br><br>— ${item.ref}`)
-                );
-                // Share button with mobile-safe fallback
+                card.addEventListener("click", () => {
+                    openModal(`${item.statement}<br><br>— ${item.ref}`);
+                });
+                // Prevent modal open when share button is clicked
                 card.querySelector(".share-button").addEventListener("click", function (e) {
                     e.stopPropagation();
-                    const quoteId = e.target.dataset.id;
+                    const quoteId = e.target.getAttribute("data-id");
                     const shareUrl = `${window.location.origin}${window.location.pathname}?quote=${quoteId}`;
-
                     if (navigator.clipboard && window.isSecureContext) {
                         navigator.clipboard.writeText(shareUrl)
                             .then(() => alert("Quote link copied to clipboard!"))
@@ -250,6 +284,7 @@
             });
         }
 
+        // Fallback method for copying text
         function fallbackCopy(text) {
             const tempInput = document.createElement("input");
             tempInput.value = text;
@@ -264,6 +299,7 @@
             document.body.removeChild(tempInput);
         }
 
+        // Open modal to display detailed quote view
         function openModal(content) {
             document.getElementById("modalContent").innerHTML = content;
             document.getElementById("quoteModal").style.display = "flex";
@@ -273,39 +309,259 @@
             document.getElementById("quoteModal").style.display = "none";
         }
 
-        // Load JSON and setup
-        fetch("quotes.json")
-            .then((response) => response.json())
-            .then((quotesData) => {
-                const flatQuotes = [];
-                quotesData.forEach((entry) => {
-                    entry.statements.forEach((item, index) => {
-                        if (!item.id) {
-                            item.id = entry.ref.replace(/\s+/g, '') + "-" + index;
-                        }
-                        flatQuotes.push({
-                            ...item,
-                            ref: entry.ref,
-                        });
+        // Process each lecture entry and its statements
+        function processQuotesData(quotesData) {
+            quotesData.forEach(entry => {
+                entry.statements.forEach((item, index) => {
+                    // If an ID is not provided, generate one
+                    if (!item.id) {
+                        item.id = entry.ref.replace(/\s+/g, '') + "-" + index;
+                    }
+
+                    // Build the search text from various fields
+                    const searchText = [
+                        item.statement,
+                        item.tags ? item.tags.join(" ") : "",
+                        item.keywords ? item.keywords.join(" ") : "",
+                        entry.speaker || "",
+                        entry.date || "",
+                        entry.location || "",
+                        entry.lecture || "",
+                        entry.ref || ""
+                    ].join(" ").toLowerCase();
+
+                    flatQuotes.push({
+                        id: item.id,
+                        statement: item.statement,
+                        ref: entry.ref,
+                        searchText: searchText,
+                        speaker: entry.speaker,
+                        date: entry.date,
+                        location: entry.location,
+                        lecture: entry.lecture
                     });
                 });
+            });
 
-                const fuse = new Fuse(flatQuotes, {
-                    keys: ["statement", "keywords", "tags"],
+            console.log(`Processed ${flatQuotes.length} quotes.`);
+        }
+
+        // Improved search function that prioritizes exact matches
+        function improvedSearch(term) {
+            // First, try exact match for specific fields
+            const exactMatches = flatQuotes.filter(quote => {
+                // Check for exact date match
+                if (quote.date && quote.date.includes(term)) {
+                    return true;
+                }
+
+                // Check for exact location match
+                if (quote.location && quote.location.toLowerCase() === term) {
+                    return true;
+                }
+
+                // Check for exact speaker match
+                if (quote.speaker && quote.speaker.toLowerCase().includes(term)) {
+                    return true;
+                }
+
+                // Check for exact lecture match
+                if (quote.lecture && quote.lecture.toLowerCase().includes(term)) {
+                    return true;
+                }
+
+                return false;
+            });
+
+            // If we have exact matches, return them
+            if (exactMatches.length > 0) {
+                return exactMatches;
+            }
+
+            // Otherwise, use Fuse.js for fuzzy search
+            return fuse.search(term).map(result => result.item);
+        }
+
+        // Perform semantic search using the Universal Sentence Encoder and cosine similarity
+        async function performSemanticSearch(query) {
+            try {
+                // Create query embedding
+                const queryEmbedding = await model.embed([query]);
+
+                // First check for exact date matches
+                if (/^\d{4}$/.test(query)) {  // If query is a 4-digit year
+                    const yearMatches = flatQuotes.filter(quote =>
+                        quote.date && quote.date.includes(query)
+                    );
+                    if (yearMatches.length > 0) {
+                        return yearMatches;
+                    }
+                }
+
+                // Calculate similarities in batches to reduce memory usage
+                const batchSize = 20;
+                let allResults = [];
+
+                for (let i = 0; i < flatQuotes.length; i += batchSize) {
+                    const batchResults = [];
+                    const endIdx = Math.min(i + batchSize, flatQuotes.length);
+
+                    for (let j = i; j < endIdx; j++) {
+                        const similarity = cosineSimilarity(queryEmbedding, quoteEmbeddings[j]);
+                        batchResults.push({
+                            quote: flatQuotes[j],
+                            score: similarity
+                        });
+                    }
+
+                    allResults = allResults.concat(batchResults);
+
+                    // Allow UI to update between batches
+                    if (i + batchSize < flatQuotes.length) {
+                        await new Promise(resolve => setTimeout(resolve, 0));
+                    }
+                }
+
+                // Sort by similarity score (highest first)
+                allResults.sort((a, b) => b.score - a.score);
+
+                // Filter by threshold and return quotes
+                const threshold = 0.15;
+                return allResults.filter(item => item.score > threshold).map(item => item.quote);
+            } catch (err) {
+                console.error("Error in semantic search:", err);
+                // Fallback to improved search
+                return improvedSearch(query);
+            }
+        }
+
+        // Initialize the search system: load model, fetch quotes, compute embeddings, and setup search
+        async function initializeSearch() {
+            // Show loading indicator
+            document.getElementById("results").innerHTML = "<p>Loading quotes...</p>";
+
+            // First load the quotes data before attempting to load the model
+            try {
+                console.log("Fetching quotes data...");
+                const response = await fetch("quotes.json");
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const quotesData = await response.json();
+                console.log("Quotes data loaded successfully.");
+
+                // Process quotes data
+                processQuotesData(quotesData);
+
+                // Setup Fuse.js for fuzzy searches - optimize for performance
+                fuse = new Fuse(flatQuotes, {
+                    keys: [
+                        { name: 'searchText', weight: 1 },
+                        { name: 'date', weight: 2 },      // Give higher weight to date
+                        { name: 'location', weight: 1.5 }, // Give higher weight to location
+                        { name: 'speaker', weight: 1.5 }   // Give higher weight to speaker
+                    ],
                     threshold: 0.3,
+                    includeScore: true,
+                    ignoreLocation: false,  // Consider location for better matching
+                    useExtendedSearch: true
                 });
 
-                document.getElementById("search").addEventListener("input", function (e) {
-                    const term = e.target.value;
-                    const results = term
-                        ? fuse.search(term).map((result) => result.item)
-                        : flatQuotes;
-                    renderResults(results);
-                });
+                // Now try to load the model after quotes are processed
+                try {
+                    console.log("Loading Universal Sentence Encoder model...");
+                    model = await use.load();
+                    console.log("Universal Sentence Encoder model loaded successfully.");
 
+                    // Compute embeddings for each quote if model is loaded
+                    try {
+                        console.log("Computing embeddings for quotes...");
+                        const texts = flatQuotes.map(q => q.searchText);
+
+                        // Process in smaller batches to avoid memory issues
+                        const batchSize = 20;
+                        for (let i = 0; i < texts.length; i += batchSize) {
+                            const batch = texts.slice(i, i + batchSize);
+                            const embeddings = await model.embed(batch);
+
+                            // Store embeddings
+                            for (let j = 0; j < batch.length; j++) {
+                                quoteEmbeddings.push(embeddings.slice([j, 0], [1, embeddings.shape[1]]));
+                            }
+
+                            console.log(`Computed embeddings for batch ${Math.floor(i / batchSize) + 1}/${Math.ceil(texts.length / batchSize)}`);
+
+                            // Give browser time to breathe between batches
+                            if (i + batchSize < texts.length) {
+                                await new Promise(resolve => setTimeout(resolve, 50));
+                                // Update loading status
+                                document.getElementById("results").innerHTML =
+                                    `<p>Loading embeddings... ${Math.min(100, Math.round((i + batchSize) / texts.length * 100))}%</p>`;
+                            }
+                        }
+
+                        console.log("Computed embeddings for all quotes.");
+                    } catch (err) {
+                        console.error("Error computing embeddings:", err);
+                        console.log("Falling back to basic search with Fuse.js");
+                    }
+                } catch (err) {
+                    console.error("Error loading USE model:", err);
+                    console.log("Falling back to basic search with Fuse.js");
+                }
+
+                // Setup search input listener with optimized debounce
+                const inputField = document.getElementById("search");
+                inputField.addEventListener("input", debounce(async function (e) {
+                    const term = e.target.value.trim().toLowerCase();
+
+                    // Show loading indicator for longer searches
+                    if (term.length > 0) {
+                        document.getElementById("results").innerHTML = "<p>Searching...</p>";
+                    }
+
+                    // Use setTimeout to allow the UI to update before heavy processing
+                    setTimeout(async () => {
+                        if (!term) {
+                            renderResults(flatQuotes);
+                        } else {
+                            let results;
+
+                            // Check for exact year match first
+                            if (/^\d{4}$/.test(term)) {  // If term is a 4-digit year
+                                const yearMatches = flatQuotes.filter(quote =>
+                                    quote.date && quote.date.includes(term)
+                                );
+                                if (yearMatches.length > 0) {
+                                    renderResults(yearMatches);
+                                    return;
+                                }
+                            }
+
+                            if (model && quoteEmbeddings.length > 0) {
+                                try {
+                                    results = await performSemanticSearch(term);
+                                    // If semantic search returns no results, fall back to improved search
+                                    if (results.length === 0) {
+                                        results = improvedSearch(term);
+                                    }
+                                } catch (err) {
+                                    console.error("Semantic search failed:", err);
+                                    results = improvedSearch(term);
+                                }
+                            } else {
+                                // Fallback to improved search
+                                results = improvedSearch(term);
+                            }
+                            renderResults(results);
+                        }
+                    }, 10);
+                }, 300));
+
+                // Initially render all quotes
                 renderResults(flatQuotes);
 
-                // Auto-open quote by ID
+                // If a quote id is provided via URL, open its modal
                 const urlParams = new URLSearchParams(window.location.search);
                 const quoteId = urlParams.get("quote");
                 if (quoteId) {
@@ -314,8 +570,30 @@
                         openModal(`${match.statement}<br><br>— ${match.ref}`);
                     }
                 }
-            })
-            .catch((error) => console.error("Error loading quotes:", error));
+            } catch (err) {
+                console.error("Error initializing search:", err);
+                document.getElementById("results").innerHTML =
+                    `<p>Error loading quotes: ${err.message}. Please check if quotes.json exists and is valid.</p>`;
+            }
+        }
+
+        // Improved debounce function with immediate option
+        function debounce(func, wait, immediate) {
+            let timeout;
+            return function (...args) {
+                const context = this;
+                const later = function () {
+                    timeout = null;
+                    if (!immediate) func.apply(context, args);
+                };
+                const callNow = immediate && !timeout;
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+                if (callNow) func.apply(context, args);
+            };
+        }
+
+        document.addEventListener("DOMContentLoaded", initializeSearch);
     </script>
 </body>
 

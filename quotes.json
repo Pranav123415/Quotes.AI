@@ -1,233 +1,375 @@
 [
   {
     "ref": "Śrīla Prabhupāda lecture on Bg 2.48 in New York in 1966",
+    "speaker": "Śrīla Prabhupāda",
+    "date": "1966",
+    "location": "New York",
+    "lecture": "Lecture on Bg 2.48",
     "statements": [
       {
         "statement": "You should not be anxious for the success or failure of the attempt you are making. Suppose you are working in a firm selling something. You go out and sincerely work. Suppose one day you get business worth 100,000 dollars, and another day you don't get any business. It doesn't matter, because your connection with the master is there and so you get your salary. When the profit is 100,000 dollars, you don't expect any profit, and when there is no business, there is no loss on your part. Siddhy-asiddhyoh.",
         "tags": ["karma", "duty", "detachment"],
-        "keywords": ["success", "failure", "result", "salary", "master"],
-        "similar_sentences": [
-          "Focus on your duty, not on the outcome.",
-          "Don’t worry about results, just serve sincerely."
-        ]
+        "keywords": ["success", "failure", "result", "salary", "master"]
       },
       {
         "statement": "I am going to my office to earn some money, because without money, my household affairs could not go on. I am thinking, 'This money is required, otherwise God's service will be stopped.' So while earning money in my office, my God consciousness is there. Therefore, even while earning, whatever the process may be, you are yoga-sthah, situated in yoga. You get some money and go to the market. You are thinking, 'Oh, this is a very nice thing. It can be offered to Lord Kṛṣṇa.' Just like sometimes you bring some fruit for me, thinking, out of your love, 'Swamiji will eat this and he will like it.' Out of love, you think of Swamiji, and Swamiji is thought of because he is in relation with God. So this is God consciousness. It is just like electricity. Anything connected with the powerhouse is surcharged with electricity.",
         "tags": ["yoga", "work", "God consciousness", "money"],
-        "keywords": ["office", "earning", "Krishna", "Swamiji", "electricity"],
-        "similar_sentences": [
-          "Your work becomes spiritual when done with God in mind.",
-          "Even earning money can be part of spiritual practice."
-        ]
+        "keywords": ["office", "earning", "Krishna", "Swamiji", "electricity"]
       },
       {
         "statement": "But if you mold your life in such a way that always, twenty-four hours a day, you are in meditation—that is the platform of yoga-sthah kuru karmāņi.",
         "tags": ["yoga", "meditation", "discipline"],
-        "keywords": ["24/7", "spiritual practice", "yoga-sthah"],
-        "similar_sentences": [
-          "Make your whole life a meditation.",
-          "Live constantly in spiritual awareness."
-        ]
+        "keywords": ["24/7", "spiritual practice", "yoga-sthah"]
       },
       {
         "statement": "Because my body is dedicated to the service of the Lord, if I don't eat sufficiently to keep my body fit, I won't be able to work. In this way, your eating is also God consciousness. Your sleeping is also God consciousness.",
         "tags": ["health", "service", "devotion"],
-        "keywords": ["eating", "body", "fitness", "service of the Lord"],
-        "similar_sentences": [
-          "Taking care of the body is also part of service.",
-          "Even eating and sleeping can be God consciousness."
-        ]
+        "keywords": ["eating", "body", "fitness", "service of the Lord"]
       }
     ]
   },
   {
-  "ref": "Srila Prabhupāda lectured on Bg 7.3 in Nairobi in 1975",
-  "statements": [
-    {
-      "statement": "So when we realize that 'I am trying to accumulate so many things, but Krsna is taking them away,' then why don't I surrender to Krsna so that He may not take away my position? That is siddhi, that 'I am not independent. I am trying independently, but it is not possible. I am dependent. I am an eternal servant of Kṛṣṇa.' That is self-realization."
-    }
-  ]
-},
-{
-  "ref": "Srila Prabhupāda lectured on Śrīmad-Bhāgavatam 7.16 in Hyderabad in 1975",
-  "statements": [
-    {
-      "statement": "By the evolutionary process, the conditioned soul transmigrates from aquatic life to plant life, then insect life, then reptile life, then bird life, then beast life, then the human form of life, then civilized human life, and then a human body born in Bharata-varsa. To be born in this land of Bharata-varsa is the highest developed life by the evolutionary process."
-    }
-  ]
-},
+    "ref": "Śrīla Prabhupāda lecture on Bg 7.3 in Nairobi in 1975",
+    "speaker": "Śrīla Prabhupāda",
+    "date": "1975",
+    "location": "Nairobi",
+    "lecture": "Lecture on Bg 7.3",
+    "statements": [
+      {
+        "statement": "So when we realize that 'I am trying to accumulate so many things, but Kṛṣṇa is taking them away,' then why don't I surrender to Kṛṣṇa so that He may not take away my position? That is siddhi, that 'I am not independent. I am trying independently, but it is not possible. I am dependent. I am an eternal servant of Kṛṣṇa.' That is self-realization.",
+        "tags": ["surrender", "dependency", "self-realization", "Kṛṣṇa consciousness"],
+        "keywords": ["accumulation", "independence", "eternal servant", "Kṛṣṇa"]
+      }
+    ]
+  },
+  {
+    "ref": "Śrīla Prabhupāda lecture on Śrīmad-Bhāgavatam 7.16 in Hyderabad in 1975",
+    "speaker": "Śrīla Prabhupāda",
+    "date": "1975",
+    "location": "Hyderabad",
+    "lecture": "Lecture on Śrīmad-Bhāgavatam 7.16",
+    "statements": [
+      {
+        "statement": "By the evolutionary process, the conditioned soul transmigrates from aquatic life to plant life, then insect life, then reptile life, then bird life, then beast life, then the human form of life, then civilized human life, and then a human body born in Bharata-varṣa. To be born in this land of Bharata-varṣa is the highest developed life by the evolutionary process.",
+        "tags": ["evolution", "soul", "reincarnation", "Bharata-varṣa"],
+        "keywords": ["transmigration", "conditioned soul", "civilized life", "evolutionary process"]
+      }
+    ]
+  },
+  {
+    "ref": "Śrīla Prabhupāda lecture on Bg 2.39 in London in 1973",
+    "speaker": "Śrīla Prabhupāda",
+    "date": "1973",
+    "location": "London",
+    "lecture": "Lecture on Bg 2.39",
+    "statements": [
+      {
+        "statement": "Because we are subordinate, we must act according to the direction of the master, or the Supreme. That is called buddhi-yoga. When you act according to the direction of the Supreme, Kṛṣṇa, or His representative, it is called buddhi-yoga.",
+        "tags": ["subordination", "buddhi-yoga", "divine direction"],
+        "keywords": ["subordinate", "buddhi-yoga", "Kṛṣṇa", "representative"]
+      },
+      {
+        "statement": "Bhajatāṁ prīti-pūrvakam: always trying to render some service to the Lord. How? Prīti-pūrvakam: 'with love and faith.' Not that 'Oh, I have to do it? All right, let me do it.' No. 'Oh, I have to do it? Let me do it nicely.' Unless there is love, you cannot do anything nicely.",
+        "tags": ["devotional service", "love", "faith"],
+        "keywords": ["prīti-pūrvakam", "service", "devotion", "nicely"]
+      },
+      {
+        "statement": "This person has surrendered to Kṛṣṇa after many, many births. If that is the ultimate goal, why shouldn't I surrender immediately? That is buddhi-yoga. 'Why shall I wait for many, many births?' That is buddhi-yoga, intelligent yoga.",
+        "tags": ["surrender", "buddhi-yoga", "spiritual urgency"],
+        "keywords": ["many births", "surrender", "intelligent", "buddhi-yoga"]
+      },
+      {
+        "statement": "As soon as one comes to the point of serving Kṛṣṇa with love, even without any understanding, it will act just like fire. Without making an analytical study of fire, if you touch it, it will act.",
+        "tags": ["devotion", "faith", "action without knowledge"],
+        "keywords": ["service", "love", "Kṛṣṇa", "fire"]
+      }
+    ]
+  },
+  {
+    "ref": "Śrīla Prabhupāda lecture on Bg 2.40 in Mayapur in 1976",
+    "speaker": "Śrīla Prabhupāda",
+    "date": "1976",
+    "location": "Mayapur",
+    "lecture": "Lecture on Bg 2.40",
+    "statements": [
+      {
+        "statement": "If you simply offer your obeisances before the Deity, you will undoubtedly make progress.",
+        "tags": ["devotional practices", "Deity worship", "progress"],
+        "keywords": ["obeisances", "Deity", "spiritual progress"]
+      },
+      {
+        "statement": "Foolish persons think that they are very much advanced and so they have no need to attend ārati, or play the mṛdaṅga or cymbals, but that is not a fact. So many items are given by the ācāryas. If not this, you do this, you do that—hundreds of items. Take any one of them and you'll be benefited. This is arcana-mārga.",
+        "tags": ["arcana", "temple activities", "ācāryas"],
+        "keywords": ["ārati", "mṛdaṅga", "ācārya", "cymbals", "arcana-mārga"]
+      }
+    ]
+  },
+  {
+    "ref": "Śrīla Prabhupāda room conversation on Bg 2.41 in Tokyo in 1974",
+    "speaker": "Śrīla Prabhupāda",
+    "date": "1974",
+    "location": "Tokyo",
+    "lecture": "Room Conversation on Bg 2.41",
+    "statements": [
+      {
+        "statement": "Lord Caitanya Mahāprabhu's mission is prithivīte āche yata nagarādi grāma: 'you must preach this cult.' One who is doing this is really a devotee. He may not be a very successful preacher that doesn't matter. Because he is doing this, he is a first-class devotee. That is a real follower. What his predecessor has ordered must be done at any risk. It doesn't matter whether it is being done nicely or not. Because he is attempting to do this, it is sufficient. That very attempt will make him successful. This is the principle. Vyavasāyātmikā buddhiḥ.",
+        "tags": ["preaching", "mission", "determination", "Lord Caitanya"],
+        "keywords": ["preach", "devotee", "mission", "order", "success", "Vyavasāyātmikā buddhiḥ"]
+      }
+    ]
+  },
+  {
+    "ref": "Śrīla Prabhupāda letter referring to Bg 2.41 in Bombay in 1976",
+    "speaker": "Śrīla Prabhupāda",
+    "date": "1976",
+    "location": "Bombay",
+    "lecture": "Letter on Bg 2.41",
+    "statements": [
+      {
+        "statement": "The real ocean of mercy is Kṛṣṇa and it is the duty of the spiritual master to tell his disciple to come to this ocean and be happy. I am trying my best, and if you try to follow, surely you will benefit.",
+        "tags": ["Kṛṣṇa", "spiritual master", "mercy", "guidance"],
+        "keywords": ["ocean of mercy", "spiritual master", "Kṛṣṇa", "disciple", "benefit"]
+      }
+    ]
+  },
+  {
+    "ref": "Śrīla Prabhupāda lecture in New Vrndāvana in 1969 referring to Bg 2.41",
+    "speaker": "Śrīla Prabhupāda",
+    "date": "1969",
+    "location": "New Vrndāvana",
+    "lecture": "Lecture on Nārada's instructions for Bg 2.41",
+    "statements": [
+      {
+        "statement": "Vyavasāyātmikā buddhir ekeha kuru-nandana: 'Those who are on this path are resolute in purpose, and their aim is one.' If that one is the source of everything, one should take that one.",
+        "tags": ["determination", "focus", "unity of purpose"],
+        "keywords": ["Vyavasāyātmikā", "buddhi", "resolute", "source"]
+      }
+    ]
+  },
   {
     "ref": "Śrīla Prabhupāda on Bg chapter 2 verse 39 in London in 1973",
+    "speaker": "Śrīla Prabhupāda",
+    "date": "1973",
+    "location": "London",
+    "lecture": "Lecture on Bg chapter 2 verse 39",
     "statements": [
       {
         "statement": "Because we are subordinate, we must act according to the direction of the master, or the Supreme. That is called buddhi-yoga. When you act according to the direction of the Supreme, Krsna, or His representative, it is called buddhi-yoga.",
-        "keywords": ["subordinate", "buddhi-yoga", "direction", "Krsna"],
-        "tags": ["Bg 2.39", "London", "1973"]
+        "tags": ["Bg 2.39", "London", "1973"],
+        "keywords": ["subordinate", "buddhi-yoga", "direction", "Krsna"]
       },
       {
         "statement": "Bhajatāṁ prīti-pūrvakam: always trying to render some service to the Lord. How? Prīti-pūrvakam: \"with love and faith.\" Not that \"Oh, I have to do it? All right, let me do it.\" No. \"Oh, I have to do it? Let me do it nicely.\" Unless there is love, you cannot do anything nicely.",
-        "keywords": ["prīti-pūrvakam", "service", "love", "faith"],
-        "tags": ["Bg 2.39", "London", "1973"]
+        "tags": ["Bg 2.39", "London", "1973"],
+        "keywords": ["prīti-pūrvakam", "service", "love", "faith"]
       },
       {
         "statement": "This person has surrendered to Krsna after many, many births. If that is the ultimate goal, why shouldn't I surrender immediately? That is buddhi-yoga. \"Why shall I wait for many, many births?\" That is buddhi-yoga, intelligent yoga.",
-        "keywords": ["surrender", "intelligent yoga", "buddhi-yoga", "births"],
-        "tags": ["Bg 2.39", "London", "1973"]
+        "tags": ["Bg 2.39", "London", "1973"],
+        "keywords": ["surrender", "intelligent yoga", "buddhi-yoga", "births"]
       },
       {
         "statement": "As soon as one comes to the point of serving Krsna with love, even without any understanding, it will act just like fire. Without making an analytical study of fire, if you touch it, it will act.",
-        "keywords": ["service", "love", "fire", "action"],
-        "tags": ["Bg 2.39", "London", "1973"]
+        "tags": ["Bg 2.39", "London", "1973"],
+        "keywords": ["service", "love", "fire", "action"]
       }
     ]
   },
   {
     "ref": "While lecturing on Śrīmad-Bhāgavatam in Mayapur in 1976, referred to Bg chapter 2 verse 40",
+    "speaker": "Śrīla Prabhupāda",
+    "date": "1976",
+    "location": "Mayapur",
+    "lecture": "Lecture on Bg chapter 2 verse 40",
     "statements": [
       {
         "statement": "If you simply offer your obeisances before the Deity, you will undoubtedly make progress.",
-        "keywords": ["obeisances", "progress", "Deity"],
-        "tags": ["Bg 2.40", "Mayapur", "1976"]
+        "tags": ["Bg 2.40", "Mayapur", "1976"],
+        "keywords": ["obeisances", "progress", "Deity"]
       },
       {
         "statement": "Foolish persons think that they are very much advanced and so they have no need to attend ārati, or play the mṛdaṅga or cymbals, but that is not a fact. So many items are given by the ācāryas. If not this, you do this, you do that—hundreds of items. Take any one of them and you'll be benefited. This is arcana-marga.",
-        "keywords": ["ārati", "mṛdaṅga", "arcana-marga", "ācāryas"],
-        "tags": ["Bg 2.40", "Mayapur", "1976"]
+        "tags": ["Bg 2.40", "Mayapur", "1976"],
+        "keywords": ["ārati", "mṛdaṅga", "arcana-marga", "ācāryas"]
       }
     ]
   },
   {
     "ref": "During a room conversation in Tokyo in 1974, referred to Bg verse 2.41",
+    "speaker": "Śrīla Prabhupāda",
+    "date": "1974",
+    "location": "Tokyo",
+    "lecture": "Room Conversation on Bg verse 2.41",
     "statements": [
       {
         "statement": "Lord Caitanya Mahaprabhu's mission is prithivite achhe yata nagarādi gram: \"you must preach this cult.\" One who is doing this is really a devotee. He may not be a very successful preacher that doesn't matter. Because he is doing this, he is a first-class devotee. That is a real follower. What his predecessor has ordered must be done at any risk. It doesn't matter whether it is being done nicely or not. Because he is attempting to do this, it is sufficient. That very attempt will make him successful. This is the principle. Vyavasāyātmikā buddhih.",
-        "keywords": ["preach", "devotee", "mission", "principle"],
-        "tags": ["Bg 2.41", "Tokyo", "1974"]
+        "tags": ["Bg 2.41", "Tokyo", "1974"],
+        "keywords": ["preach", "devotee", "mission", "principle"]
       }
     ]
   },
   {
     "ref": "In a 1976 letter addressed to My dear Sons and Daughters in Bombay, referred to Bg verse 2.41",
+    "speaker": "Śrīla Prabhupāda",
+    "date": "1976",
+    "location": "Bombay",
+    "lecture": "Letter on Bg verse 2.41",
     "statements": [
       {
         "statement": "The real ocean of mercy is Krsna and it is the duty of the spiritual master to tell his disciple to come to this ocean and be happy. I am trying my best, and if you try to follow, surely you will benefit.",
-        "keywords": ["ocean of mercy", "spiritual master", "benefit"],
-        "tags": ["Bg 2.41", "Bombay", "1976"]
+        "tags": ["Bg 2.41", "Bombay", "1976"],
+        "keywords": ["ocean of mercy", "spiritual master", "benefit"]
       }
     ]
   },
   {
     "ref": "While lecturing on Nārada's instructions to Śrīla Vyāsadeva in the First Canto of Śrimad-Bhāgavatam in New Vrndāvana in 1969, referred to Bg verse 2.41",
+    "speaker": "Śrīla Prabhupāda",
+    "date": "1969",
+    "location": "New Vrndāvana",
+    "lecture": "Lecture on Nārada's instructions for Bg 2.41",
     "statements": [
       {
         "statement": "Vyavasāyātmikā buddhir ekeha kuru nandana: \"Those who are on this path are resolute in purpose, and their aim is one.\" If that one is the source of everything, one should take that one.",
-        "keywords": ["resolute", "purpose", "unity", "source"],
-        "tags": ["Bg 2.41", "New Vrndāvana", "1969"]
+        "tags": ["Bg 2.41", "New Vrndāvana", "1969"],
+        "keywords": ["resolute", "purpose", "unity", "source"]
       }
     ]
   },
   {
     "ref": "Śrīla Prabhupāda lectured on Bg verse 2.47 in New York in 1966",
+    "speaker": "Śrīla Prabhupāda",
+    "date": "1966",
+    "location": "New York",
+    "lecture": "Lecture on Bg verse 2.47",
     "statements": [
       {
         "statement": "If you don't give engagement to the consciousness on the consciousness plane, then naturally consciousness will act through the body.",
-        "keywords": ["engagement", "consciousness", "body"],
-        "tags": ["Bg 2.47", "New York", "1966"]
+        "tags": ["Bg 2.47", "New York", "1966"],
+        "keywords": ["engagement", "consciousness", "body"]
       },
       {
         "statement": "One should not think, \"Because I am not this body, I shall cease working.\" No. If you stop working, then your idle brain will become a devil's workshop. Therefore the Lord says, \"The technique of acting on the spiritual platform is that you have a right to act according to your position,\" but mã phaleșu kadācana: \"you should not desire to enjoy the fruits of your activities.\"",
-        "keywords": ["technique", "spiritual platform", "mā phaleśu", "work"],
-        "tags": ["Bg 2.47", "New York", "1966"]
+        "tags": ["Bg 2.47", "New York", "1966"],
+        "keywords": ["technique", "spiritual platform", "mā phaleśu", "work"]
       },
       {
         "statement": "Our mind is so inclined that if I cannot enjoy the fruits of my activities, then I am disinclined. There is an English proverb: \"Proprietorship turns sand into gold.\" A person working on his own account can turn sand into gold, but a person working on another's account will be slow. \"Why shall I work so hard? The result will be enjoyed by someone else.\" But here the Lord says, \"You cannot stop your work, nor can you enjoy the fruits of your activities.\" That is work on the spiritual plane.",
-        "keywords": ["work", "proverb", "effort", "fruition"],
-        "tags": ["Bg 2.47", "New York", "1966"]
+        "tags": ["Bg 2.47", "New York", "1966"],
+        "keywords": ["work", "proverb", "effort", "fruition"]
       },
       {
         "statement": "If your fruitive results are offered to the Supreme Lord, they will be distributed to everyone. That is the spiritual State.",
-        "keywords": ["fruitive results", "distribution", "spiritual state"],
-        "tags": ["Bg 2.47", "New York", "1966"]
+        "tags": ["Bg 2.47", "New York", "1966"],
+        "keywords": ["fruitive results", "distribution", "spiritual state"]
       }
     ]
   },
   {
     "ref": "Śrīla Prabhupāda lectured on Bg verse 2.48 in New York in 1966",
+    "speaker": "Śrīla Prabhupāda",
+    "date": "1966",
+    "location": "New York",
+    "lecture": "Lecture on Bg verse 2.48",
     "statements": [
       {
         "statement": "This technique of working on the spiritual platform is explained herewith, siddhy-asiddhyoḥ samo bhūtvä: \"You should not be anxious for the success or failure of the attempt you are making.\" Suppose you are working in a firm selling something. You go out and sincerely work. Suppose one day you get business worth 100,000 dollars, and another day you don't get any business. It doesn't matter, because your connection with the master is there and so you get your salary. When the profit is 100,000 dollars, you don't expect any profit, and when there is no business, there is no loss on your part. Siddhy-asiddhyoh.",
-        "keywords": ["siddhy-asiddhyoḥ", "spiritual platform", "business", "master connection"],
-        "tags": ["Bg 2.48", "New York", "1966"]
+        "tags": ["Bg 2.48", "New York", "1966"],
+        "keywords": ["siddhy-asiddhyoḥ", "spiritual platform", "business", "master connection"]
       },
       {
         "statement": "I am going to my office to earn some money, because without money, my household affairs could not go on. I am thinking, \"This money is required, otherwise God's service will be stopped.\" So while earning money in my office, my God consciousness is there. Therefore, even while earning, whatever the process may be, you are yoga-sthah, situated in yoga. You get some money and go to the market. You are thinking, \"Oh, this is a very nice thing. It can be offered to Lord Krşņa.\" Just like sometimes you bring some fruit for me, thinking, out of your love, \"Swamiji will eat this and he will like it.\" Out of love, you think of Swamiji, and Swamiji is thought of because he is in relation with God. So this is God consciousness. It is just like electricity. Anything connected with the powerhouse is surcharged with electricity.",
-        "keywords": ["office", "earning", "God consciousness", "market", "offering"],
-        "tags": ["Bg 2.48", "New York", "1966"]
+        "tags": ["Bg 2.48", "New York", "1966"],
+        "keywords": ["office", "earning", "God consciousness", "market", "offering"]
       },
       {
         "statement": "But if you mold your life in such a way that always, twenty-four hours a day, you are in meditation—that is the platform of yoga-sthah kuru karmāņi.",
-        "keywords": ["meditation", "yoga-sthah", "constant practice"],
-        "tags": ["Bg 2.48", "New York", "1966"]
+        "tags": ["Bg 2.48", "New York", "1966"],
+        "keywords": ["meditation", "yoga-sthah", "constant practice"]
       },
       {
         "statement": "Because my body is dedicated to the service of the Lord, if I don't eat sufficiently to keep my body fit, I won't be able to work. In this way, your eating is also God consciousness. Your sleeping is also God consciousness.",
-        "keywords": ["body", "service", "eating", "sleeping", "God consciousness"],
-        "tags": ["Bg 2.48", "New York", "1966"]
+        "tags": ["Bg 2.48", "New York", "1966"],
+        "keywords": ["body", "service", "eating", "sleeping", "God consciousness"]
       }
     ]
   },
   {
     "ref": "Śrīla Prabhupāda lectured on Bg verses 2.49-50 in New York in 1966",
+    "speaker": "Śrīla Prabhupāda",
+    "date": "1966",
+    "location": "New York",
+    "lecture": "Lecture on Bg verses 2.49-50",
     "statements": [
       {
         "statement": "Buddhi-yoga means devotional service to the Lord. So you have to do everything based on the criterion of buddhi-yoga, or devotional service to the Lord. That is the technique. Dūreṇa hy avaram karma buddhi-yogāt. You have to use your intelligence, \"Whether I am doing this on the platform of pure consciousness, or on the platform of this body?\" Don't do any work which you cannot do in God consciousness.",
-        "keywords": ["buddhi-yoga", "devotional service", "technique", "intelligence"],
-        "tags": ["Bg 2.49-50", "New York", "1966"]
+        "tags": ["Bg 2.49-50", "New York", "1966"],
+        "keywords": ["buddhi-yoga", "devotional service", "technique", "intelligence"]
       }
     ]
   },
   {
     "ref": "Śrīla Prabhupāda lectured on Bg verses 2.52-53 in New York in 1966",
+    "speaker": "Śrīla Prabhupāda",
+    "date": "1966",
+    "location": "New York",
+    "lecture": "Lecture on Bg verses 2.52-53",
     "statements": [
       {
         "statement": "Therefore the whole thing depends upon how to adjust ourselves to that supreme consciousness. If while performing all the religious rituals very nicely and perfectly, we fail to dovetail ourselves with the supreme consciousness, then all our labor for performing these rituals becomes only a labor of love. It has not produced anything substantial.",
-        "keywords": ["supreme consciousness", "rituals", "adjustment", "labor of love"],
-        "tags": ["Bg 2.52-53", "New York", "1966"]
+        "tags": ["Bg 2.52-53", "New York", "1966"],
+        "keywords": ["supreme consciousness", "rituals", "adjustment", "labor of love"]
       }
     ]
   },
   {
     "ref": "Śrīla Prabhupāda lectured on Bg verses 2.55-58 in New York in 1966",
+    "speaker": "Śrīla Prabhupāda",
+    "date": "1966",
+    "location": "New York",
+    "lecture": "Lecture on Bg verses 2.55-58",
     "statements": [
       {
         "statement": "The first symptom of a self-realized soul is that he doesn't make any plans for his prosperity. I should not make any plan independently, but I must accept the standard plan which is coming directly from the supreme consciousness through a channel.",
-        "keywords": ["self-realization", "prosperity", "standard plan", "supreme consciousness"],
-        "tags": ["Bg 2.55-58", "New York", "1966"]
+        "tags": ["Bg 2.55-58", "New York", "1966"],
+        "keywords": ["self-realization", "prosperity", "standard plan", "supreme consciousness"]
       }
     ]
   },
   {
     "ref": "Śrīla Prabhupāda lectured on Bg verse 2.59 in New York in 1966",
+    "speaker": "Śrīla Prabhupāda",
+    "date": "1966",
+    "location": "New York",
+    "lecture": "Lecture on Bg verse 2.59",
     "statements": [
       {
         "statement": "We have to learn how to see the beauty of spiritual life, and then we will be able to refrain from material activities. We have to be always, cent percent, engaged in spiritual activities. That should be the program of our life.",
-        "keywords": ["spiritual life", "beauty", "engagement", "material detachment"],
-        "tags": ["Bg 2.59", "New York", "1966"]
+        "tags": ["Bg 2.59", "New York", "1966"],
+        "keywords": ["spiritual life", "beauty", "engagement", "material detachment"]
       }
     ]
   },
   {
     "ref": "Śrīla Prabhupāda lectured on Bg verses 2.60-61 in New York in 1966",
+    "speaker": "Śrīla Prabhupāda",
+    "date": "1966",
+    "location": "New York",
+    "lecture": "Lecture on Bg verses 2.60-61",
     "statements": [
       {
         "statement": "If you simply chant the holy names of the Lord, then everything will by and by come to you automatically.",
-        "keywords": ["chanting", "holy names", "Krishna", "grace"],
-        "tags": ["Bg 2.60-61", "New York", "1966"]
+        "tags": ["Bg 2.60-61", "New York", "1966"],
+        "keywords": ["chanting", "holy names", "Krishna", "grace"]
       }
     ]
   },
   {
     "ref": "Bhagavad-gītā 2.60–61 — Lecture by Śrīla Prabhupāda, New York, 1966",
+    "speaker": "Śrīla Prabhupāda",
+    "date": "1966",
+    "location": "New York",
+    "lecture": "Lecture on Bg 2.60–61",
     "statements": [
       {
         "statement": "Without penance and without sacrifice, nobody has attained spiritual perfection. So we require some sort of penance. That penance is to not engage our senses in the process of sense gratification.",
@@ -243,6 +385,10 @@
   },
   {
     "ref": "Bhagavad-gītā 2.67–68 — Lecture by Śrīla Prabhupāda, Los Angeles, 1968",
+    "speaker": "Śrīla Prabhupāda",
+    "date": "1968",
+    "location": "Los Angeles",
+    "lecture": "Lecture on Bg 2.67–68",
     "statements": [
       {
         "statement": "If you want to control the senses, then you first have to control the tongue. Then you will be able to control the other senses very easily. Give the tongue the engagement of chanting Hare Kṛṣṇa and tasting Kṛṣṇa prasādam and then you'll find that your other senses are already controlled. This is the key to controlling the senses, but if you allow the tongue indulgence, you'll never be able to control the other senses. This is the secret of controlling the senses.",
@@ -253,6 +399,10 @@
   },
   {
     "ref": "Bhagavad-gītā 2.41 — Disappearance Day Lecture on Śrīla Bhaktisiddhānta Sarasvatī Ṭhākura by Śrīla Prabhupāda, Los Angeles, 1968",
+    "speaker": "Śrīla Prabhupāda",
+    "date": "1968",
+    "location": "Los Angeles",
+    "lecture": "Disappearance Day Lecture on Śrīla Bhaktisiddhānta Sarasvatī Ṭhākura",
     "statements": [
       {
         "statement": "If we strictly try to serve the spiritual master, his order, then Kṛṣṇa will give us all facilities. That is the secret. Although I never thought that there was any possibility.",
@@ -268,6 +418,10 @@
   },
   {
     "ref": "Bhagavad-gītā 2.59 — Room Conversation with Śrīla Prabhupāda, New Mayapur, France, 1976",
+    "speaker": "Śrīla Prabhupāda",
+    "date": "1976",
+    "location": "New Mayapur, France",
+    "lecture": "Room Conversation on Bg 2.59",
     "statements": [
       {
         "statement": "In the spiritual world, the service of the Lord is so pleasing that they can neglect sense pleasure. That is spiritual world.",
@@ -278,6 +432,10 @@
   },
   {
     "ref": "Bhagavad-gītā 3.4–5 — Lecture by Śrīla Prabhupāda, Los Angeles, 1968",
+    "speaker": "Śrīla Prabhupāda",
+    "date": "1968",
+    "location": "Los Angeles",
+    "lecture": "Lecture on Bg 3.4–5",
     "statements": [
       {
         "statement": "Simply rejecting will not help you. You must have positive engagement in Kṛṣṇa consciousness.",
@@ -288,6 +446,10 @@
   },
   {
     "ref": "Bhagavad-gītā 3.6–8 — Lecture by Śrīla Prabhupāda, Los Angeles, 1968",
+    "speaker": "Śrīla Prabhupāda",
+    "date": "1968",
+    "location": "Los Angeles",
+    "lecture": "Lecture on Bg 3.6–8",
     "statements": [
       {
         "statement": "You cannot cheat others. Simply for Kṛṣṇa's satisfaction you can beg from others.",
@@ -303,6 +465,10 @@
   },
   {
     "ref": "Bhagavad-gītā 3.36–40 — Lecture by Śrīla Prabhupāda, Los Angeles, 1969",
+    "speaker": "Śrīla Prabhupāda",
+    "date": "1969",
+    "location": "Los Angeles",
+    "lecture": "Lecture on Bg 3.36–40",
     "statements": [
       {
         "statement": "Engage your senses in Kṛṣṇa conscious activities. Then lust will have no place to attack your senses, or sit on your senses. Engage your mind in Kṛṣṇa. Immediately, lust from the mind will go away. Similarly, apply your intelligence, how to work in Kṛṣṇa consciousness. These are the processes.",
@@ -313,6 +479,10 @@
   },
   {
     "ref": "Bhagavad-gītā 3.36–37 — Lecture by Śrīla Prabhupāda, Melbourne",
+    "speaker": "Śrīla Prabhupāda",
+    "date": "",
+    "location": "Melbourne",
+    "lecture": "Lecture on Bg 3.36–37",
     "statements": [
       {
         "statement": "These boys and girls are engaged in the service of the Lord. They are not ordinary boys. Their reactions of sinful life are finished. Therefore they are so steadily engaged, twenty-four hours, from early in the morning, four o'clock. That is the sign that they are freed from the reactions of all sinful activities. This is the proof.",
@@ -323,6 +493,10 @@
   },
   {
     "ref": "Bhagavad-gītā 3.41–43 — Lecture by Śrīla Prabhupāda, Los Angeles, 1969",
+    "speaker": "Śrīla Prabhupāda",
+    "date": "1969",
+    "location": "Los Angeles",
+    "lecture": "Lecture on Bg 3.41–43",
     "statements": [
       {
         "statement": "Intelligent take to the practice of yoga by intelligently trying to control the senses. But as soon as you come to the spiritual platform, automatically these things are done because your senses, mind, and intelligence are occupied by Kṛṣṇa consciousness.",
@@ -333,6 +507,10 @@
   },
   {
     "ref": "Bhagavad-gītā 3.42 — Lecture by Śrīla Prabhupāda, Nairobi, 1975",
+    "speaker": "Śrīla Prabhupāda",
+    "date": "1975",
+    "location": "Nairobi",
+    "lecture": "Lecture on Bg 3.42",
     "statements": [
       {
         "statement": "He came here for everyone, because he loves everyone.",
@@ -343,11 +521,145 @@
   },
   {
     "ref": "Bhagavad-gītā 3.42 — Lecture by Śrīla Prabhupāda, London, 1973",
+    "speaker": "Śrīla Prabhupāda",
+    "date": "1973",
+    "location": "London",
+    "lecture": "Lecture on Bg 3.42",
     "statements": [
       {
         "statement": "As my mind is absorbed in some subject matter, my bodily symptoms will appear.",
         "tags": ["mind", "absorption", "symptoms"],
         "keywords": ["mental focus", "bodily expression", "mind-body connection"]
+      }
+    ]
+  },
+  {
+    "ref": "Bhagavad-gītā 4.5–9 — Lecture by Śrīla Prabhupāda, Bombay, 1974",
+    "speaker": "Śrīla Prabhupāda",
+    "date": "1974",
+    "location": "Bombay",
+    "lecture": "Lecture on Krishna's Deliverance",
+    "statements": [
+      {
+        "statement": "If you simply read the Kṛṣṇa book, although it looks like a story, you will become delivered from the clutches of the repetition of birth and death.",
+        "tags": ["reading", "deliverance", "birth and death"],
+        "keywords": ["Kṛṣṇa book", "liberation", "repetition"]
+      },
+      {
+        "statement": "The people who are very seriously reading the Kṛṣṇa book and trying to understand Kṛṣṇa will understand. Kṛṣṇa is very kind. As soon as someone begins reading the Kṛṣṇa book with a little faith and adherence, Kṛṣṇa will be very much pleased.",
+        "tags": ["reading", "devotion", "faith"],
+        "keywords": ["Kṛṣṇa book", "understanding", "kindness"]
+      },
+      {
+        "statement": "You don't have to search for Kṛṣṇa—He's already within you. Simply you have to become a little serious.",
+        "tags": ["introspection", "seriousness", "Kṛṣṇa within"],
+        "keywords": ["search", "internal", "presence"]
+      },
+      {
+        "statement": "If you are a serious devotee, if you are in love with Kṛṣṇa, then teṣāṁ satata-yuktānāṁ bhajatāṁ prīti-pūrvakam: Kṛṣṇa will reveal Himself to you.",
+        "tags": ["devotion", "revelation", "love"],
+        "keywords": ["teṣāṁ satata-yuktānāṁ", "serious devotee", "Kṛṣṇa reveals"]
+      }
+    ]
+  },
+  {
+    "ref": "Bhagavad-gītā 4.5–9 — Lecture by Śrīla Prabhupāda, New York, 1966",
+    "speaker": "Śrīla Prabhupāda",
+    "date": "1966",
+    "location": "New York",
+    "lecture": "Lecture on Divine Protection",
+    "statements": [
+      {
+        "statement": "The Lord is very much anxious about saintly persons who have sacrificed everything for His service and so are very, very dear to Him.",
+        "tags": ["saintly persons", "devotion", "protection"],
+        "keywords": ["sacrifice", "dear to Lord", "service"]
+      },
+      {
+        "statement": "The Lord cannot tolerate it when someone misbehaves with a sādhu. Although a sādhu tolerates all insults, the Lord will never tolerate it if a sādhu is insulted or threatened.",
+        "tags": ["sadhu", "Lord's protection", "tolerance"],
+        "keywords": ["insult", "divine justice", "saint"]
+      },
+      {
+        "statement": "There is special protection for the person who is a devotee who is always thinking of Kṛṣṇa in Kṛṣṇa consciousness.",
+        "tags": ["protection", "devotee", "Kṛṣṇa consciousness"],
+        "keywords": ["shelter", "thinking of Kṛṣṇa", "safety"]
+      },
+      {
+        "statement": "When we acquire transcendental senses, we will see Kṛṣṇa through the Bhagavad-gītā. The Bhagavad-gītā is Kṛṣṇa. Bhagavad-gītā is not different from Kṛṣṇa.",
+        "tags": ["Bhagavad-gītā", "transcendental", "Kṛṣṇa"],
+        "keywords": ["non-difference", "scripture", "vision"]
+      },
+      {
+        "statement": "If we chant this vibration of transcendental sound with devotion and attention, it is the highest type of meditation and yoga. And it is very easy.",
+        "tags": ["chanting", "meditation", "yoga"],
+        "keywords": ["devotion", "attention", "sound vibration"]
+      },
+      {
+        "statement": "So anyone who understands this fact, that Kṛṣṇa is not different from the sound Kṛṣṇa, that Kṛṣṇa is not different from the Bhagavad-gītā, and that Kṛṣṇa is not different from anything which is connected with Kṛṣṇa.",
+        "tags": ["non-duality", "Kṛṣṇa", "connection"],
+        "keywords": ["sound", "Bhagavad-gītā", "devotional link"]
+      }
+    ]
+  },
+  {
+    "ref": "Bhagavad-gītā 4.10 — Lecture by Śrīla Prabhupāda, Vṛndāvana, 1974",
+    "speaker": "Śrīla Prabhupāda",
+    "date": "1974",
+    "location": "Vṛndāvana",
+    "lecture": "Lecture on Remembrance and Devotion",
+    "statements": [
+      {
+        "statement": "Always think of Kṛṣṇa, man-manāḥ. If you simply think of Kṛṣṇa, if you simply chant the Hare Kṛṣṇa names, you remain man-mayā.",
+        "tags": ["chanting", "remembrance", "Kṛṣṇa consciousness"],
+        "keywords": ["man-manāḥ", "Hare Kṛṣṇa", "thought absorption"]
+      },
+      {
+        "statement": "It is understood that those who are thinking of Kṛṣṇa have taken shelter of Kṛṣṇa.",
+        "tags": ["shelter", "remembrance", "devotion"],
+        "keywords": ["man-manāḥ", "surrender", "thinking of Kṛṣṇa"]
+      },
+      {
+        "statement": "Suffering is there and so why not suffer for Kṛṣṇa?",
+        "tags": ["suffering", "sacrifice", "Kṛṣṇa"],
+        "keywords": ["endurance", "devotional hardship", "dedication"]
+      }
+    ]
+  },
+  {
+    "ref": "Bhagavad-gītā 4.11 — Lecture by Śrīla Prabhupāda, New York, 1966",
+    "speaker": "Śrīla Prabhupāda",
+    "date": "1966",
+    "location": "New York",
+    "lecture": "Lecture on Leadership and Personal Conduct",
+    "statements": [
+      {
+        "statement": "The leader should be such that he will make the persons following him happy and prosperous.",
+        "tags": ["leadership", "prosperity", "happiness"],
+        "keywords": ["qualities of leader", "guidance", "benefit"]
+      },
+      {
+        "statement": "I have a particular lust within me, and when I find somebody corroborating with that particular lust, I accept him as a leader. That is my position. Therefore I do not follow anyone's leadership.",
+        "tags": ["false leadership", "lust", "independence"],
+        "keywords": ["illusion", "corruption", "self-will"]
+      },
+      {
+        "statement": "If you agree to follow the leadership of Kṛṣṇa then proportionately as you follow, you will become perfect. If you follow one percent, you will become one percent perfect. If you follow twenty-five percent, you will become twenty-five percent perfect. And if you follow cent-percent, you will become cent percent perfect.",
+        "tags": ["leadership", "Kṛṣṇa", "perfection"],
+        "keywords": ["proportion", "obedience", "devotional growth"]
+      }
+    ]
+  },
+  {
+    "ref": "Bhagavad-gītā 4.14–15 — Lecture by Śrīla Prabhupāda, New York, 1966",
+    "speaker": "Śrīla Prabhupāda",
+    "date": "1966",
+    "location": "New York",
+    "lecture": "Lecture on Divine Relationships",
+    "statements": [
+      {
+        "statement": "So accept Kṛṣṇa as your son and He'll be the most obedient son, just as He was playing the part before Yaśodā. Similarly, accept Kṛṣṇa as your husband or lover. You'll never be frustrated. That is the whole philosophy. Whatever desire you have, you can establish a relationship with Kṛṣṇa and you'll be perfectly happy, and never be cheated.",
+        "tags": ["relationship", "Kṛṣṇa", "fulfillment"],
+        "keywords": ["Yaśodā", "son", "lover", "spiritual relationship"]
       }
     ]
   }
