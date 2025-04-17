@@ -6,16 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Srila Prabhupada Quotes</title>
     <link rel="icon" href="favicon.ico?v=1" type="image/x-icon" />
-    <link rel="apple-touch-icon" href="favicon.ico?v=1" />
-
-    <!-- External Libraries -->
-    <!-- Fuse.js for fuzzy matching fallback -->
-    <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.6.2/dist/fuse.min.js"></script>
-    <!-- TensorFlow.js -->
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@3.11.0/dist/tf.min.js"></script>
-    <!-- Universal Sentence Encoder -->
-    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/universal-sentence-encoder@1.3.3"></script>
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         :root {
             --bg-color: #121212;
@@ -31,11 +22,6 @@
             margin: 0;
             padding: 2rem;
             overflow-x: hidden;
-        }
-
-        ::-webkit-scrollbar {
-            width: 0;
-            background: transparent;
         }
 
         .container {
@@ -59,7 +45,6 @@
             color: var(--text-color);
             font-size: 1rem;
             box-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(4px);
         }
 
         input[type="text"]::placeholder {
@@ -75,6 +60,7 @@
             margin-bottom: 1.5rem;
             cursor: pointer;
             transition: transform 0.2s, border-color 0.2s;
+            position: relative;
         }
 
         .quote-card:hover {
@@ -92,114 +78,174 @@
             color: #bbb;
         }
 
-        .share-button {
-            background: none;
-            border: none;
-            color: var(--accent);
-            cursor: pointer;
-            font-size: 1rem;
-            padding: 0.3rem;
+        .relevance {
+            font-size: 0.8rem;
+            color: #888;
             margin-top: 0.5rem;
-            display: inline-block;
+            font-style: italic;
         }
 
-        .share-button:hover {
-            text-decoration: underline;
-        }
-
-        .modal {
+        #loading {
+            text-align: center;
+            margin: 2rem;
+            font-size: 1.2rem;
+            color: var(--accent);
             display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.85);
-            justify-content: center;
+        }
+
+        .search-options {
+            display: flex;
+            margin-bottom: 1rem;
+            gap: 10px;
+        }
+
+        button {
+            background: var(--accent);
+            color: #000;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .toggle-container {
+            display: flex;
             align-items: center;
-            animation: fadeInModal 0.3s ease-in-out;
+            margin-bottom: 1rem;
         }
 
-        @keyframes fadeInModal {
-            from {
-                opacity: 0;
-                transform: scale(0.95);
-            }
-
-            to {
-                opacity: 1;
-                transform: scale(1);
-            }
-        }
-
-        .modal-content {
+        .toggle-switch {
             position: relative;
-            width: 90vw;
-            height: 90vw;
-            max-width: 800px;
-            max-height: 800px;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
-            background: #000;
+            display: inline-block;
+            width: 60px;
+            height: 34px;
+            margin-right: 10px;
         }
 
-        .bg-picture {
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
             position: absolute;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-        }
-
-        .bg-picture img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .quote-text {
-            position: absolute;
-            bottom: 0;
+            cursor: pointer;
+            top: 0;
             left: 0;
             right: 0;
-            z-index: 2;
-            padding: 1rem 1.5rem;
-            background: rgba(0, 0, 0, 0.5);
-            color: #fff;
-            font-size: 1.4rem;
-            line-height: 1.6;
-            text-align: center;
-            box-sizing: border-box;
-            border-top-left-radius: 10px;
-            border-top-right-radius: 10px;
-            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.7);
-            max-height: 40%;
-            overflow-y: auto;
+            bottom: 0;
+            background-color: #333;
+            transition: .4s;
+            border-radius: 34px;
         }
 
-        .modal-close {
+        .toggle-slider:before {
             position: absolute;
-            top: 1rem;
-            right: 1rem;
-            z-index: 3;
-            font-size: 2.5rem;
-            color: #fff;
-            cursor: pointer;
-            user-select: none;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
         }
 
-        @media (max-width: 600px) {
-            .modal-content {
-                width: 95vw;
-                height: 95vw;
-            }
+        input:checked+.toggle-slider {
+            background-color: var(--accent);
+        }
 
-            .quote-text {
-                font-size: 1.2rem;
-                padding: 0.8rem 1rem;
-                max-height: 35%;
-            }
+        input:checked+.toggle-slider:before {
+            transform: translateX(26px);
+        }
+
+        .toggle-label {
+            font-size: 0.9rem;
+        }
+
+        #progress-container {
+            width: 100%;
+            background-color: #333;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        #progress-bar {
+            height: 10px;
+            width: 0%;
+            background-color: var(--accent);
+            border-radius: 5px;
+            transition: width 0.3s;
+        }
+
+        .copy-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: rgba(0, 0, 0, 0.3);
+            color: var(--accent);
+            border: none;
+            border-radius: 4px;
+            padding: 5px 8px;
+            font-size: 14px;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .quote-card:hover .copy-btn {
+            opacity: 1;
+        }
+
+        .toast {
+            position: fixed;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--accent);
+            color: #000;
+            padding: 10px 20px;
+            border-radius: 5px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+            font-weight: bold;
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+
+        .filter-chip {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 5px 12px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .filter-chip:hover,
+        .filter-chip.active {
+            background: var(--accent);
+            color: #000;
+        }
+
+        .no-results {
+            text-align: center;
+            margin: 3rem 0;
+            color: #888;
         }
     </style>
 </head>
@@ -207,393 +253,555 @@
 <body>
     <div class="container">
         <h1>Hare Krishna Mohana Prabhuji 😊, PAMHO 🙇</h1>
-        <input type="text" id="search"
-            placeholder="Search by keyword, tag, date, location, or any part of the quote..." />
+
+        <div class="toggle-container">
+            <label class="toggle-switch">
+                <input type="checkbox" id="aiToggle" checked>
+                <span class="toggle-slider"></span>
+            </label>
+            <span class="toggle-label">Use advanced semantic search (more accurate)</span>
+        </div>
+
+        <input type="text" id="search" placeholder="Search by meaning, concept, or keywords..." />
+
+        <div class="filters" id="filters">
+            <!-- Filters will be generated dynamically -->
+        </div>
+
+        <div id="progress-container">
+            <div id="progress-bar"></div>
+        </div>
+        <div id="loading">Finding the most relevant quotes...</div>
         <div id="results"></div>
     </div>
 
-    <!-- Modal for detailed quote view -->
-    <div class="modal" id="quoteModal">
-        <div class="modal-content">
-            <picture class="bg-picture">
-                <source media="(max-width:600px)" srcset="bg-mobile.jpg">
-                <source media="(min-width:601px)" srcset="bg.jpg">
-                <img src="bg.jpg" alt="Background">
-            </picture>
-            <div class="quote-text" id="modalContent"></div>
-            <div class="modal-close" onclick="closeModal()">×</div>
-        </div>
-    </div>
+    <div class="toast" id="toast"></div>
 
     <script>
-        // Global arrays for quotes and embeddings
-        let flatQuotes = [];
-        let quoteEmbeddings = [];
-        let model;  // Universal Sentence Encoder model
-        let fuse;   // Fuse.js instance for fallback search
-
-        // Compute cosine similarity between two tensors
-        function cosineSimilarity(a, b) {
-            return tf.tidy(() => {
-                // Make sure both tensors are 2D for proper dot product
-                const a2D = a.reshape([1, -1]);
-                const b2D = b.reshape([1, -1]);
-
-                // Calculate cosine similarity: dot(a, b) / (||a|| * ||b||)
-                const dotProduct = a2D.matMul(b2D.transpose()).dataSync()[0];
-                const normA = a2D.norm().dataSync()[0];
-                const normB = b2D.norm().dataSync()[0];
-
-                return dotProduct / (normA * normB);
-            });
-        }
-
-        // Render quotes in the results container
-        function renderResults(data) {
-            const resultsContainer = document.getElementById("results");
-            resultsContainer.innerHTML = "";
-            if (data.length === 0) {
-                resultsContainer.innerHTML = "<p>No matching quotes found.</p>";
-                return;
+        // Main app state
+        const state = {
+            quotes: [],
+            flatQuotes: [],
+            aiMode: true,
+            precomputed: {},
+            filters: {
+                topics: new Set(),
+                activeFilters: new Set()
             }
-            data.forEach(item => {
-                const card = document.createElement("div");
-                card.className = "quote-card";
-                card.innerHTML = `
-          <div class="statement">"${item.statement}"</div>
-          <div class="ref">— ${item.ref}</div>
-          <button class="share-button" data-id="${item.id}">🔗 Share</button>
-        `;
-                card.addEventListener("click", () => {
-                    openModal(`${item.statement}<br><br>— ${item.ref}`);
-                });
-                // Prevent modal open when share button is clicked
-                card.querySelector(".share-button").addEventListener("click", function (e) {
-                    e.stopPropagation();
-                    const quoteId = e.target.getAttribute("data-id");
-                    const shareUrl = `${window.location.origin}${window.location.pathname}?quote=${quoteId}`;
-                    if (navigator.clipboard && window.isSecureContext) {
-                        navigator.clipboard.writeText(shareUrl)
-                            .then(() => alert("Quote link copied to clipboard!"))
-                            .catch(() => fallbackCopy(shareUrl));
-                    } else {
-                        fallbackCopy(shareUrl);
-                    }
-                });
-                resultsContainer.appendChild(card);
-            });
-        }
+        };
 
-        // Fallback method for copying text
-        function fallbackCopy(text) {
-            const tempInput = document.createElement("input");
-            tempInput.value = text;
-            document.body.appendChild(tempInput);
-            tempInput.select();
+        // DOM elements
+        const elements = {
+            aiToggle: document.getElementById('aiToggle'),
+            searchInput: document.getElementById('search'),
+            loading: document.getElementById('loading'),
+            results: document.getElementById('results'),
+            progressContainer: document.getElementById('progress-container'),
+            progressBar: document.getElementById('progress-bar'),
+            filtersContainer: document.getElementById('filters'),
+            toast: document.getElementById('toast')
+        };
+
+        // Constants for improving search quality
+        const SEMANTIC_THRESHOLD = 0.6;  // Minimum similarity score for semantic search
+        const MODELS = {
+            basic: "sentence-transformers/all-MiniLM-L6-v2",
+            advanced: "sentence-transformers/multi-qa-mpnet-base-dot-v1"  // Better model for question-answer pairs
+        };
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            // Load quotes
+            loadQuotes();
+
+            // Event listeners
+            elements.aiToggle.addEventListener('change', (e) => {
+                state.aiMode = e.target.checked;
+                // If there's already a search term, redo the search
+                if (elements.searchInput.value.trim()) {
+                    handleSearch();
+                }
+            });
+
+            elements.searchInput.addEventListener('input', debounce(handleSearch, 300));
+        });
+
+        // Load quotes from JSON file
+        async function loadQuotes() {
             try {
-                document.execCommand("copy");
-                alert("Quote link copied (fallback)!");
-            } catch (err) {
-                alert("Please copy this link manually:\n" + text);
-            }
-            document.body.removeChild(tempInput);
-        }
+                const response = await fetch("quotes.json");
+                state.quotes = await response.json();
 
-        // Open modal to display detailed quote view
-        function openModal(content) {
-            document.getElementById("modalContent").innerHTML = content;
-            document.getElementById("quoteModal").style.display = "flex";
-        }
+                // Flatten quotes for easier access
+                state.flatQuotes = [];
+                const topicSet = new Set();
 
-        function closeModal() {
-            document.getElementById("quoteModal").style.display = "none";
-        }
+                state.quotes.forEach(entry => {
+                    entry.statements.forEach((item, index) => {
+                        if (!item.id) {
+                            item.id = entry.ref.replace(/\s+/g, '') + "-" + index;
+                        }
 
-        // Process each lecture entry and its statements
-        function processQuotesData(quotesData) {
-            quotesData.forEach(entry => {
-                entry.statements.forEach((item, index) => {
-                    // If an ID is not provided, generate one
-                    if (!item.id) {
-                        item.id = entry.ref.replace(/\s+/g, '') + "-" + index;
-                    }
+                        // Extract topics from tags or keywords
+                        const topics = [];
+                        if (item.tags && Array.isArray(item.tags)) {
+                            item.tags.forEach(tag => {
+                                topics.push(tag);
+                                topicSet.add(tag);
+                            });
+                        }
+                        if (item.keywords && Array.isArray(item.keywords)) {
+                            item.keywords.forEach(keyword => {
+                                topics.push(keyword);
+                                topicSet.add(keyword);
+                            });
+                        }
 
-                    // Build the search text from various fields
-                    const searchText = [
-                        item.statement,
-                        item.tags ? item.tags.join(" ") : "",
-                        item.keywords ? item.keywords.join(" ") : "",
-                        entry.speaker || "",
-                        entry.date || "",
-                        entry.location || "",
-                        entry.lecture || "",
-                        entry.ref || ""
-                    ].join(" ").toLowerCase();
-
-                    flatQuotes.push({
-                        id: item.id,
-                        statement: item.statement,
-                        ref: entry.ref,
-                        searchText: searchText,
-                        speaker: entry.speaker,
-                        date: entry.date,
-                        location: entry.location,
-                        lecture: entry.lecture
+                        state.flatQuotes.push({
+                            ...item,
+                            ref: entry.ref,
+                            topics: topics
+                        });
                     });
                 });
-            });
 
-            console.log(`Processed ${flatQuotes.length} quotes.`);
+                // Generate topic filters
+                state.filters.topics = Array.from(topicSet).sort();
+                renderFilters();
+
+                // Check if we have precomputed results
+                const savedPrecomputed = localStorage.getItem('precomputed_results');
+                if (savedPrecomputed) {
+                    try {
+                        state.precomputed = JSON.parse(savedPrecomputed);
+                        console.log("Loaded precomputed results for", Object.keys(state.precomputed).length, "queries");
+                    } catch (e) {
+                        console.error("Error parsing saved precomputed results:", e);
+                    }
+                }
+
+                // Show initial results
+                renderResults(state.flatQuotes.slice(0, 20));
+            } catch (error) {
+                console.error("Error loading quotes:", error);
+                elements.results.innerHTML = `<div class="error">Error loading quotes: ${error.message}</div>`;
+            }
         }
 
-        // Improved search function that prioritizes exact matches
-        function improvedSearch(term) {
-            // First, try exact match for specific fields
-            const exactMatches = flatQuotes.filter(quote => {
-                // Check for exact date match
-                if (quote.date && quote.date.includes(term)) {
-                    return true;
+        // Render topic filters
+        function renderFilters() {
+            // Take only the most common topics (up to 15)
+            const topTopics = state.filters.topics.slice(0, 15);
+
+            elements.filtersContainer.innerHTML = '';
+
+            topTopics.forEach(topic => {
+                const chip = document.createElement('div');
+                chip.className = 'filter-chip';
+                chip.textContent = topic;
+                chip.dataset.topic = topic;
+
+                if (state.filters.activeFilters.has(topic)) {
+                    chip.classList.add('active');
                 }
 
-                // Check for exact location match
-                if (quote.location && quote.location.toLowerCase() === term) {
-                    return true;
-                }
+                chip.addEventListener('click', () => {
+                    if (state.filters.activeFilters.has(topic)) {
+                        state.filters.activeFilters.delete(topic);
+                        chip.classList.remove('active');
+                    } else {
+                        state.filters.activeFilters.add(topic);
+                        chip.classList.add('active');
+                    }
 
-                // Check for exact speaker match
-                if (quote.speaker && quote.speaker.toLowerCase().includes(term)) {
-                    return true;
-                }
+                    // Re-run search with filters
+                    handleSearch();
+                });
 
-                // Check for exact lecture match
-                if (quote.lecture && quote.lecture.toLowerCase().includes(term)) {
-                    return true;
-                }
-
-                return false;
+                elements.filtersContainer.appendChild(chip);
             });
+        }
 
-            // If we have exact matches, return them
-            if (exactMatches.length > 0) {
-                return exactMatches;
+        // Handle search
+        async function handleSearch() {
+            const searchTerm = elements.searchInput.value.trim();
+
+            // When there's no search term, show filtered results or initial results
+            if (!searchTerm) {
+                if (state.filters.activeFilters.size > 0) {
+                    const filteredResults = state.flatQuotes.filter(quote =>
+                        quote.topics && quote.topics.some(topic =>
+                            state.filters.activeFilters.has(topic)
+                        )
+                    );
+                    renderResults(filteredResults.slice(0, 20));
+                } else {
+                    renderResults(state.flatQuotes.slice(0, 20));
+                }
+                return;
             }
 
-            // Otherwise, use Fuse.js for fuzzy search
-            return fuse.search(term).map(result => result.item);
+            // Create cache key that includes active filters
+            const cacheKey = searchTerm + '|' + Array.from(state.filters.activeFilters).sort().join(',');
+
+            // Check if we have cached results for this search+filters combination
+            if (state.aiMode && state.precomputed[cacheKey]) {
+                console.log("Using cached results for:", cacheKey);
+                renderResults(state.precomputed[cacheKey]);
+                return;
+            }
+
+            if (state.aiMode) {
+                elements.loading.style.display = 'block';
+                elements.progressContainer.style.display = 'block';
+                elements.progressBar.style.width = '0%';
+
+                try {
+                    await aiSearch(searchTerm);
+                } catch (error) {
+                    console.error("AI search error:", error);
+                    elements.results.innerHTML = `
+                        <div class="error">
+                            AI search error: ${error.message}<br>
+                            Falling back to enhanced keyword search.
+                        </div>
+                    `;
+                    // Fall back to enhanced keyword search
+                    const results = enhancedKeywordSearch(searchTerm);
+                    renderResults(results);
+                } finally {
+                    elements.loading.style.display = 'none';
+                    elements.progressContainer.style.display = 'none';
+                }
+            } else {
+                // Enhanced keyword search
+                const results = enhancedKeywordSearch(searchTerm);
+                renderResults(results);
+            }
         }
 
-        // Perform semantic search using the Universal Sentence Encoder and cosine similarity
-        async function performSemanticSearch(query) {
+        // AI-powered search using sentence-transformers
+        async function aiSearch(searchTerm) {
+            // Use a more advanced model for better accuracy
+            const model = MODELS.advanced;
+
+            const batchSize = 10; // Process quotes in batches to show progress
+            const topResults = []; // Store the top matches
+
+            // Apply any active filters to narrow the search scope
+            let quotesToSearch = state.flatQuotes;
+            if (state.filters.activeFilters.size > 0) {
+                quotesToSearch = state.flatQuotes.filter(quote =>
+                    !quote.topics || quote.topics.some(topic =>
+                        state.filters.activeFilters.has(topic)
+                    )
+                );
+            }
+
+            // Create an array of all statements
+            const statements = quotesToSearch.map(q => q.statement);
+            const totalBatches = Math.ceil(statements.length / batchSize);
+
             try {
-                // Create query embedding
-                const queryEmbedding = await model.embed([query]);
+                // First, get embedding for the search query with enhanced prompt
+                const enhancedQuery = `Find quotes about: ${searchTerm}`;
+                const queryEmbedding = await getEmbedding(enhancedQuery, model);
 
-                // First check for exact date matches
-                if (/^\d{4}$/.test(query)) {  // If query is a 4-digit year
-                    const yearMatches = flatQuotes.filter(quote =>
-                        quote.date && quote.date.includes(query)
-                    );
-                    if (yearMatches.length > 0) {
-                        return yearMatches;
-                    }
-                }
+                // Process quotes in batches
+                for (let i = 0; i < statements.length; i += batchSize) {
+                    const batchStatements = statements.slice(i, i + batchSize);
+                    const batchQuotes = quotesToSearch.slice(i, i + batchSize);
 
-                // Calculate similarities in batches to reduce memory usage
-                const batchSize = 20;
-                let allResults = [];
+                    // Update progress
+                    const progress = Math.round((i / statements.length) * 100);
+                    elements.progressBar.style.width = `${progress}%`;
 
-                for (let i = 0; i < flatQuotes.length; i += batchSize) {
-                    const batchResults = [];
-                    const endIdx = Math.min(i + batchSize, flatQuotes.length);
+                    // Get embeddings for this batch
+                    const batchEmbeddings = await getBatchEmbeddings(batchStatements, model);
 
-                    for (let j = i; j < endIdx; j++) {
-                        const similarity = cosineSimilarity(queryEmbedding, quoteEmbeddings[j]);
-                        batchResults.push({
-                            quote: flatQuotes[j],
+                    // Calculate similarities
+                    for (let j = 0; j < batchEmbeddings.length; j++) {
+                        const similarity = cosineSimilarity(queryEmbedding, batchEmbeddings[j]);
+                        topResults.push({
+                            ...batchQuotes[j],
                             score: similarity
                         });
-                    }
-
-                    allResults = allResults.concat(batchResults);
-
-                    // Allow UI to update between batches
-                    if (i + batchSize < flatQuotes.length) {
-                        await new Promise(resolve => setTimeout(resolve, 0));
                     }
                 }
 
                 // Sort by similarity score (highest first)
-                allResults.sort((a, b) => b.score - a.score);
+                topResults.sort((a, b) => b.score - a.score);
 
-                // Filter by threshold and return quotes
-                const threshold = 0.15;
-                return allResults.filter(item => item.score > threshold).map(item => item.quote);
-            } catch (err) {
-                console.error("Error in semantic search:", err);
-                // Fallback to improved search
-                return improvedSearch(query);
+                // Keep only the top results with a reasonable similarity
+                const results = topResults
+                    .filter(r => r.score > SEMANTIC_THRESHOLD)
+                    .slice(0, 20);
+
+                // Cache the results with the filters included in the key
+                const cacheKey = searchTerm + '|' + Array.from(state.filters.activeFilters).sort().join(',');
+                state.precomputed[cacheKey] = results;
+
+                // Limit cache size to prevent memory issues
+                if (Object.keys(state.precomputed).length > 100) {
+                    const oldestKey = Object.keys(state.precomputed)[0];
+                    delete state.precomputed[oldestKey];
+                }
+
+                localStorage.setItem('precomputed_results', JSON.stringify(state.precomputed));
+
+                // Display results
+                renderResults(results);
+
+                // Complete the progress bar
+                elements.progressBar.style.width = '100%';
+
+            } catch (error) {
+                console.error("Error in AI search:", error);
+                throw error;
             }
         }
 
-        // Initialize the search system: load model, fetch quotes, compute embeddings, and setup search
-        async function initializeSearch() {
-            // Show loading indicator
-            document.getElementById("results").innerHTML = "<p>Loading quotes...</p>";
-
-            // First load the quotes data before attempting to load the model
+        // Get embedding using the FREE Hugging Face API (no key required)
+        async function getEmbedding(text, model) {
             try {
-                console.log("Fetching quotes data...");
-                const response = await fetch("quotes.json");
+                const response = await fetch(
+                    `https://api-inference.huggingface.co/pipeline/feature-extraction/${model}`,
+                    {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ inputs: text, options: { wait_for_model: true } })
+                    }
+                );
+
                 if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
+                    throw new Error(`API request failed with status ${response.status}`);
                 }
-                const quotesData = await response.json();
-                console.log("Quotes data loaded successfully.");
 
-                // Process quotes data
-                processQuotesData(quotesData);
+                return await response.json();
+            } catch (error) {
+                console.error("Error getting embedding:", error);
+                throw error;
+            }
+        }
 
-                // Setup Fuse.js for fuzzy searches - optimize for performance
-                fuse = new Fuse(flatQuotes, {
-                    keys: [
-                        { name: 'searchText', weight: 1 },
-                        { name: 'date', weight: 2 },      // Give higher weight to date
-                        { name: 'location', weight: 1.5 }, // Give higher weight to location
-                        { name: 'speaker', weight: 1.5 }   // Give higher weight to speaker
-                    ],
-                    threshold: 0.3,
-                    includeScore: true,
-                    ignoreLocation: false,  // Consider location for better matching
-                    useExtendedSearch: true
+        // Get embeddings for multiple texts
+        async function getBatchEmbeddings(texts, model) {
+            try {
+                const response = await fetch(
+                    `https://api-inference.huggingface.co/pipeline/feature-extraction/${model}`,
+                    {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ inputs: texts, options: { wait_for_model: true } })
+                    }
+                );
+
+                if (!response.ok) {
+                    throw new Error(`API request failed with status ${response.status}`);
+                }
+
+                return await response.json();
+            } catch (error) {
+                console.error("Error getting batch embeddings:", error);
+                throw error;
+            }
+        }
+
+        // Enhanced keyword search with contextual understanding
+        function enhancedKeywordSearch(query) {
+            query = query.toLowerCase();
+
+            // Split query into words and phrases
+            let keywords = [];
+            let phrases = [];
+
+            // Extract quoted phrases
+            const phraseRegex = /"([^"]*)"/g;
+            let match;
+            while ((match = phraseRegex.exec(query)) !== null) {
+                phrases.push(match[1].toLowerCase());
+            }
+
+            // Remove the quoted phrases from the query
+            const remainingQuery = query.replace(/"([^"]*)"/g, '').trim();
+
+            // Split remaining text into keywords
+            keywords = remainingQuery.split(/\s+/).filter(k => k.length > 2);
+
+            // Apply filters first if any
+            let quotesToSearch = state.flatQuotes;
+            if (state.filters.activeFilters.size > 0) {
+                quotesToSearch = state.flatQuotes.filter(quote =>
+                    quote.topics && quote.topics.some(topic =>
+                        state.filters.activeFilters.has(topic)
+                    )
+                );
+            }
+
+            return quotesToSearch
+                .map(quote => {
+                    const statement = quote.statement.toLowerCase();
+                    let score = 0;
+
+                    // Check each phrase (highest priority)
+                    phrases.forEach(phrase => {
+                        if (statement.includes(phrase)) {
+                            score += 10;  // Phrases get high priority
+                        }
+                    });
+
+                    // Check each keyword
+                    keywords.forEach(keyword => {
+                        // Full word match
+                        const wordRegex = new RegExp(`\\b${keyword}\\b`, 'i');
+                        if (wordRegex.test(statement)) {
+                            score += 3;  // Full word match gets higher score
+                        }
+                        // Partial match
+                        else if (statement.includes(keyword)) {
+                            score += 1;
+                        }
+                    });
+
+                    // Check whole query as a concept
+                    if (statement.includes(remainingQuery)) {
+                        score += 5;  // Bonus for containing the whole query
+                    }
+
+                    // Check tags and keywords if available
+                    if (quote.tags) {
+                        [...keywords, ...phrases].forEach(term => {
+                            if (quote.tags.some(tag => tag.toLowerCase().includes(term))) {
+                                score += 2;  // Tags are important for topic matching
+                            }
+                        });
+                    }
+
+                    if (quote.keywords) {
+                        [...keywords, ...phrases].forEach(term => {
+                            if (quote.keywords.some(k => k.toLowerCase().includes(term))) {
+                                score += 2;  // Keywords are important for concept matching
+                            }
+                        });
+                    }
+
+                    // Normalize score relative to query complexity
+                    const queryComplexity = keywords.length + (phrases.length * 2);
+                    const normalizedScore = queryComplexity > 0 ? score / queryComplexity : score;
+
+                    return {
+                        ...quote,
+                        score: normalizedScore
+                    };
+                })
+                .filter(item => item.score > 0)
+                .sort((a, b) => b.score - a.score)
+                .slice(0, 20);  // Limit to top 20 results
+        }
+
+        // Render search results
+        function renderResults(data) {
+            elements.results.innerHTML = "";
+
+            if (data.length === 0) {
+                elements.results.innerHTML = "<div class='no-results'>No matching quotes found</div>";
+                return;
+            }
+
+            data.forEach(item => {
+                const card = document.createElement("div");
+                card.className = "quote-card";
+
+                // Prepare text for display
+                const statementText = item.statement;
+                const refText = item.ref;
+
+                // Create a relevance indicator that makes sense
+                let relevanceText = '';
+                if (item.score !== undefined) {
+                    const relevanceCategory = getRelevanceCategory(item.score);
+                    relevanceText = `<div class="relevance">${relevanceCategory}</div>`;
+                }
+
+                card.innerHTML = `
+                    <div class="statement">"${statementText}"</div>
+                    <div class="ref">— ${refText}</div>
+                    ${relevanceText}
+                    <button class="copy-btn" title="Copy quote"><i class="fas fa-copy"></i></button>
+                `;
+
+                // Add copy functionality
+                card.querySelector('.copy-btn').addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    copyToClipboard(`"${statementText}" — ${refText}`);
                 });
 
-                // Now try to load the model after quotes are processed
-                try {
-                    console.log("Loading Universal Sentence Encoder model...");
-                    model = await use.load();
-                    console.log("Universal Sentence Encoder model loaded successfully.");
-
-                    // Compute embeddings for each quote if model is loaded
-                    try {
-                        console.log("Computing embeddings for quotes...");
-                        const texts = flatQuotes.map(q => q.searchText);
-
-                        // Process in smaller batches to avoid memory issues
-                        const batchSize = 20;
-                        for (let i = 0; i < texts.length; i += batchSize) {
-                            const batch = texts.slice(i, i + batchSize);
-                            const embeddings = await model.embed(batch);
-
-                            // Store embeddings
-                            for (let j = 0; j < batch.length; j++) {
-                                quoteEmbeddings.push(embeddings.slice([j, 0], [1, embeddings.shape[1]]));
-                            }
-
-                            console.log(`Computed embeddings for batch ${Math.floor(i / batchSize) + 1}/${Math.ceil(texts.length / batchSize)}`);
-
-                            // Give browser time to breathe between batches
-                            if (i + batchSize < texts.length) {
-                                await new Promise(resolve => setTimeout(resolve, 50));
-                                // Update loading status
-                                document.getElementById("results").innerHTML =
-                                    `<p>Loading embeddings... ${Math.min(100, Math.round((i + batchSize) / texts.length * 100))}%</p>`;
-                            }
-                        }
-
-                        console.log("Computed embeddings for all quotes.");
-                    } catch (err) {
-                        console.error("Error computing embeddings:", err);
-                        console.log("Falling back to basic search with Fuse.js");
-                    }
-                } catch (err) {
-                    console.error("Error loading USE model:", err);
-                    console.log("Falling back to basic search with Fuse.js");
-                }
-
-                // Setup search input listener with optimized debounce
-                const inputField = document.getElementById("search");
-                inputField.addEventListener("input", debounce(async function (e) {
-                    const term = e.target.value.trim().toLowerCase();
-
-                    // Show loading indicator for longer searches
-                    if (term.length > 0) {
-                        document.getElementById("results").innerHTML = "<p>Searching...</p>";
-                    }
-
-                    // Use setTimeout to allow the UI to update before heavy processing
-                    setTimeout(async () => {
-                        if (!term) {
-                            renderResults(flatQuotes);
-                        } else {
-                            let results;
-
-                            // Check for exact year match first
-                            if (/^\d{4}$/.test(term)) {  // If term is a 4-digit year
-                                const yearMatches = flatQuotes.filter(quote =>
-                                    quote.date && quote.date.includes(term)
-                                );
-                                if (yearMatches.length > 0) {
-                                    renderResults(yearMatches);
-                                    return;
-                                }
-                            }
-
-                            if (model && quoteEmbeddings.length > 0) {
-                                try {
-                                    results = await performSemanticSearch(term);
-                                    // If semantic search returns no results, fall back to improved search
-                                    if (results.length === 0) {
-                                        results = improvedSearch(term);
-                                    }
-                                } catch (err) {
-                                    console.error("Semantic search failed:", err);
-                                    results = improvedSearch(term);
-                                }
-                            } else {
-                                // Fallback to improved search
-                                results = improvedSearch(term);
-                            }
-                            renderResults(results);
-                        }
-                    }, 10);
-                }, 300));
-
-                // Initially render all quotes
-                renderResults(flatQuotes);
-
-                // If a quote id is provided via URL, open its modal
-                const urlParams = new URLSearchParams(window.location.search);
-                const quoteId = urlParams.get("quote");
-                if (quoteId) {
-                    const match = flatQuotes.find(q => q.id === quoteId);
-                    if (match) {
-                        openModal(`${match.statement}<br><br>— ${match.ref}`);
-                    }
-                }
-            } catch (err) {
-                console.error("Error initializing search:", err);
-                document.getElementById("results").innerHTML =
-                    `<p>Error loading quotes: ${err.message}. Please check if quotes.json exists and is valid.</p>`;
-            }
+                elements.results.appendChild(card);
+            });
         }
 
-        // Improved debounce function with immediate option
-        function debounce(func, wait, immediate) {
+        // Convert numeric score to meaningful relevance category
+        function getRelevanceCategory(score) {
+            if (score >= 0.9) return "Perfect match";
+            if (score >= 0.8) return "Very high relevance";
+            if (score >= 0.7) return "High relevance";
+            if (score >= 0.6) return "Good match";
+            if (score >= 0.5) return "Relevant";
+            if (score >= 0.4) return "Somewhat relevant";
+            return "Possible match";
+        }
+
+        // Copy text to clipboard with visual feedback
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text)
+                .then(() => showToast("Quote copied to clipboard"))
+                .catch(() => {
+                    // Fallback for browsers that don't support clipboard API
+                    const textArea = document.createElement("textarea");
+                    textArea.value = text;
+                    textArea.style.position = "fixed";
+                    document.body.appendChild(textArea);
+                    textArea.focus();
+                    textArea.select();
+
+                    try {
+                        document.execCommand('copy');
+                        showToast("Quote copied to clipboard");
+                    } catch (err) {
+                        showToast("Failed to copy. Please copy manually.");
+                    }
+
+                    document.body.removeChild(textArea);
+                });
+        }
+
+        // Show toast notification
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.style.opacity = 1;
+
+            setTimeout(() => {
+                toast.style.opacity = 0;
+            }, 3000);
+        }
+
+        // Calculate cosine similarity between two vectors
+        function cosineSimilarity(vecA, vecB) {
+            const dotProduct = vecA.reduce((sum, val, i) => sum + val * vecB[i], 0);
+            const magA = Math.sqrt(vecA.reduce((sum, val) => sum + val * val, 0));
+            const magB = Math.sqrt(vecB.reduce((sum, val) => sum + val * val, 0));
+            return dotProduct / (magA * magB);
+        }
+
+        // Debounce function
+        function debounce(func, wait) {
             let timeout;
             return function (...args) {
-                const context = this;
-                const later = function () {
-                    timeout = null;
-                    if (!immediate) func.apply(context, args);
-                };
-                const callNow = immediate && !timeout;
                 clearTimeout(timeout);
-                timeout = setTimeout(later, wait);
-                if (callNow) func.apply(context, args);
+                timeout = setTimeout(() => func.apply(this, args), wait);
             };
         }
-
-        document.addEventListener("DOMContentLoaded", initializeSearch);
     </script>
 </body>
 
