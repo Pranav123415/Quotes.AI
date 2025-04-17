@@ -13,75 +13,122 @@
             --card-bg: #1e1e1e;
             --text-color: #e0e0e0;
             --accent: #ffd54f;
+            --accent-hover: #ffea97;
+            --header-height: 60px;
+            --search-height: 50px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
-            font-family: 'Segoe UI', sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: var(--bg-color);
             color: var(--text-color);
             margin: 0;
-            padding: 2rem;
+            padding: 0;
             overflow-x: hidden;
+            line-height: 1.6;
+        }
+
+        .header {
+            background-color: rgba(18, 18, 18, 0.95);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
         }
 
         .container {
-            max-width: 800px;
+            max-width: 900px;
             margin: 0 auto;
+            padding: 0 1.5rem;
         }
 
         h1 {
             text-align: center;
             color: var(--accent);
-            margin-bottom: 2rem;
+            margin-bottom: 1rem;
+            font-size: 1.8rem;
+            letter-spacing: 0.5px;
+        }
+
+        .search-container {
+            position: sticky;
+            top: var(--header-height);
+            z-index: 90;
+            background: var(--bg-color);
+            padding: 1rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .search-wrapper {
+            position: relative;
+            margin-bottom: 1rem;
         }
 
         input[type="text"] {
             width: 100%;
-            padding: 12px;
-            margin-bottom: 2rem;
-            border-radius: 8px;
-            border: 1px solid rgba(255, 255, 255, 0.15);
+            padding: 12px 20px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
             background: rgba(255, 255, 255, 0.05);
             color: var(--text-color);
             font-size: 1rem;
-            box-shadow: 0 0 8px rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 4px 12px rgba(255, 213, 79, 0.2);
         }
 
         input[type="text"]::placeholder {
             color: #aaa;
         }
 
+        .search-icon {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #777;
+        }
+
         .quote-card {
             background: var(--card-bg);
             border-left: 4px solid var(--accent);
-            border-radius: 10px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+            padding: 1.5rem 1.8rem;
             margin-bottom: 1.5rem;
-            cursor: pointer;
-            transition: transform 0.2s, border-color 0.2s;
             position: relative;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
         .quote-card:hover {
-            transform: scale(1.02);
-            border-color: #ffeb3b;
+            transform: translateY(-5px);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
         }
 
         .statement {
-            font-size: 1.1rem;
-            margin-bottom: 0.5rem;
+            font-size: 1.15rem;
+            margin-bottom: 0.8rem;
+            line-height: 1.6;
         }
 
         .ref {
-            font-size: 0.9rem;
+            font-size: 0.95rem;
             color: #bbb;
-        }
-
-        .relevance {
-            font-size: 0.8rem;
-            color: #888;
-            margin-top: 0.5rem;
             font-style: italic;
         }
 
@@ -93,111 +140,56 @@
             display: none;
         }
 
-        .search-options {
-            display: flex;
-            margin-bottom: 1rem;
-            gap: 10px;
+        .content {
+            padding: 2rem 0;
+            min-height: calc(100vh - var(--header-height) - var(--search-height));
         }
 
-        button {
-            background: var(--accent);
+        .btn {
+            background: linear-gradient(to right, var(--accent), #ffb300);
             color: #000;
             border: none;
-            padding: 8px 16px;
-            border-radius: 4px;
+            padding: 10px 20px;
+            font-size: 0.95rem;
+            border-radius: 30px;
             cursor: pointer;
-            font-weight: bold;
-        }
-
-        button:hover {
-            opacity: 0.9;
-        }
-
-        .toggle-container {
-            display: flex;
+            font-weight: 600;
+            display: inline-flex;
             align-items: center;
-            margin-bottom: 1rem;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 10px rgba(255, 213, 79, 0.3);
+            transition: all 0.3s ease;
         }
 
-        .toggle-switch {
-            position: relative;
-            display: inline-block;
-            width: 60px;
-            height: 34px;
-            margin-right: 10px;
+        .btn:hover {
+            background: linear-gradient(to right, var(--accent-hover), #ffc107);
+            box-shadow: 0 6px 12px rgba(255, 213, 79, 0.4);
+            transform: translateY(-2px);
         }
 
-        .toggle-switch input {
-            opacity: 0;
-            width: 0;
-            height: 0;
-        }
-
-        .toggle-slider {
-            position: absolute;
-            cursor: pointer;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-color: #333;
-            transition: .4s;
-            border-radius: 34px;
-        }
-
-        .toggle-slider:before {
-            position: absolute;
-            content: "";
-            height: 26px;
-            width: 26px;
-            left: 4px;
-            bottom: 4px;
-            background-color: white;
-            transition: .4s;
-            border-radius: 50%;
-        }
-
-        input:checked+.toggle-slider {
-            background-color: var(--accent);
-        }
-
-        input:checked+.toggle-slider:before {
-            transform: translateX(26px);
-        }
-
-        .toggle-label {
+        .btn i {
             font-size: 0.9rem;
-        }
-
-        #progress-container {
-            width: 100%;
-            background-color: #333;
-            border-radius: 5px;
-            margin-bottom: 1rem;
-            display: none;
-        }
-
-        #progress-bar {
-            height: 10px;
-            width: 0%;
-            background-color: var(--accent);
-            border-radius: 5px;
-            transition: width 0.3s;
         }
 
         .copy-btn {
             position: absolute;
             top: 15px;
             right: 15px;
-            background-color: rgba(0, 0, 0, 0.3);
+            background-color: rgba(30, 30, 30, 0.8);
             color: var(--accent);
             border: none;
-            border-radius: 4px;
-            padding: 5px 8px;
+            border-radius: 6px;
+            padding: 8px 12px;
             font-size: 14px;
             cursor: pointer;
             opacity: 0;
-            transition: opacity 0.2s;
+            transition: opacity 0.2s, transform 0.2s;
+            backdrop-filter: blur(5px);
+        }
+
+        .copy-btn:hover {
+            transform: scale(1.05);
         }
 
         .quote-card:hover .copy-btn {
@@ -211,11 +203,11 @@
             transform: translateX(-50%);
             background: var(--accent);
             color: #000;
-            padding: 10px 20px;
-            border-radius: 5px;
-            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
-            font-weight: bold;
-            z-index: 100;
+            padding: 12px 24px;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            font-weight: 600;
+            z-index: 1000;
             opacity: 0;
             transition: opacity 0.3s;
         }
@@ -224,175 +216,290 @@
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
-            margin-bottom: 1rem;
+            margin-bottom: 1.5rem;
         }
 
         .filter-chip {
             background: rgba(255, 255, 255, 0.1);
             border-radius: 20px;
-            padding: 5px 12px;
+            padding: 6px 14px;
             font-size: 0.9rem;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.2s;
         }
 
-        .filter-chip:hover,
+        .filter-chip:hover {
+            background: rgba(255, 213, 79, 0.2);
+        }
+
         .filter-chip.active {
             background: var(--accent);
             color: #000;
+            font-weight: 500;
         }
 
         .no-results {
             text-align: center;
             margin: 3rem 0;
             color: #888;
+            font-size: 1.1rem;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 1rem;
+        }
+
+        .refresh-btn {
+            background: linear-gradient(to right, #2c2c2c, #3c3c3c);
+            color: var(--accent);
+            border: 1px solid rgba(255, 213, 79, 0.3);
+        }
+
+        .refresh-btn:hover {
+            background: linear-gradient(to right, #2a2a2a, #3a3a3a);
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .quote-card {
+                padding: 1.2rem 1.5rem;
+            }
+
+            .statement {
+                font-size: 1.05rem;
+            }
         }
     </style>
 </head>
 
 <body>
-    <div class="container">
-        <h1>Hare Krishna Mohana Prabhuji 😊, PAMHO 🙇</h1>
-
-        <div class="toggle-container">
-            <label class="toggle-switch">
-                <input type="checkbox" id="aiToggle" checked>
-                <span class="toggle-slider"></span>
-            </label>
-            <span class="toggle-label">Use advanced semantic search (more accurate)</span>
+    <div class="header">
+        <div class="container">
+            <h1>Hare Krishna Mohana Prabhuji 😊, PAMHO 🙇</h1>
         </div>
+    </div>
 
-        <input type="text" id="search" placeholder="Search by meaning, concept, or keywords..." />
+    <div class="search-container">
+        <div class="container">
+            <div class="search-wrapper">
+                <input type="text" id="search" placeholder="Search by reference (BG, SB), keyword, or meaning..." />
+                <i class="fas fa-search search-icon"></i>
+            </div>
 
-        <div class="filters" id="filters">
-            <!-- Filters will be generated dynamically -->
+            <div class="filters" id="filters">
+                <!-- Filters will be generated dynamically -->
+            </div>
+
+            <div class="actions">
+                <button id="refreshBtn" class="btn refresh-btn">
+                    <i class="fas fa-sync-alt"></i> Refresh Quotes
+                </button>
+            </div>
         </div>
+    </div>
 
-        <div id="progress-container">
-            <div id="progress-bar"></div>
+    <div class="content">
+        <div class="container">
+            <div id="loading">Finding quotes...</div>
+            <div id="results"></div>
         </div>
-        <div id="loading">Finding the most relevant quotes...</div>
-        <div id="results"></div>
     </div>
 
     <div class="toast" id="toast"></div>
 
     <script>
-        // Main app state
         const state = {
             quotes: [],
             flatQuotes: [],
-            aiMode: true,
-            precomputed: {},
             filters: {
                 topics: new Set(),
                 activeFilters: new Set()
             }
         };
 
-        // DOM elements
         const elements = {
-            aiToggle: document.getElementById('aiToggle'),
             searchInput: document.getElementById('search'),
             loading: document.getElementById('loading'),
             results: document.getElementById('results'),
-            progressContainer: document.getElementById('progress-container'),
-            progressBar: document.getElementById('progress-bar'),
             filtersContainer: document.getElementById('filters'),
-            toast: document.getElementById('toast')
+            toast: document.getElementById('toast'),
+            refreshBtn: document.getElementById('refreshBtn')
         };
 
-        // Constants for improving search quality
-        const SEMANTIC_THRESHOLD = 0.6;  // Minimum similarity score for semantic search
-        const MODELS = {
-            basic: "sentence-transformers/all-MiniLM-L6-v2",
-            advanced: "sentence-transformers/multi-qa-mpnet-base-dot-v1"  // Better model for question-answer pairs
-        };
+        // Sample data for testing - would be replaced by your actual quotes.json
+        const sampleQuotes = [
+            {
+                "ref": "Bhagavad-gītā 4.11",
+                "speaker": "Lord Kṛṣṇa",
+                "scripture": "BG",
+                "chapter": "4",
+                "verse": "11",
+                "statements": [
+                    {
+                        "statement": "As all surrender unto Me, I reward them accordingly. Everyone follows My path in all respects, O son of Pṛthā.",
+                        "tags": ["surrender", "reciprocation", "devotional service"],
+                        "keywords": ["surrender", "reward", "path"]
+                    }
+                ]
+            },
+            {
+                "ref": "Śrīla Prabhupāda lecture on Bg 2.48 in New York in 1966",
+                "speaker": "Śrīla Prabhupāda",
+                "date": "1966",
+                "location": "New York",
+                "lecture": "Lecture on Bg 2.48",
+                "statements": [
+                    {
+                        "statement": "You should not be anxious for the success or failure of the attempt you are making. Suppose you are working in a firm selling something. You go out and sincerely work. Suppose one day you get business worth 100,000 dollars, and another day you don't get any business. It doesn't matter, because your connection with the master is there and so you get your salary. When the profit is 100,000 dollars, you don't expect any profit, and when there is no business, there is no loss on your part. Siddhy-asiddhyoh.",
+                        "tags": ["karma", "duty", "detachment"],
+                        "keywords": ["success", "failure", "result", "salary", "master"]
+                    },
+                    {
+                        "statement": "I am going to my office to earn some money, because without money, my household affairs could not go on. I am thinking, 'This money is required, otherwise God's service will be stopped.' So while earning money in my office, my God consciousness is there. Therefore, even while earning, whatever the process may be, you are yoga-sthah, situated in yoga. You get some money and go to the market. You are thinking, 'Oh, this is a very nice thing. It can be offered to Lord Kṛṣṇa.' Just like sometimes you bring some fruit for me, thinking, out of your love, 'Swamiji will eat this and he will like it.' Out of love, you think of Swamiji, and Swamiji is thought of because he is in relation with God. So this is God consciousness. It is just like electricity. Anything connected with the powerhouse is surcharged with electricity.",
+                        "tags": ["yoga", "work", "God consciousness", "money"],
+                        "keywords": ["office", "earning", "Krishna", "Swamiji", "electricity"]
+                    }
+                ]
+            }
+        ];
 
-        // Initialize
         document.addEventListener('DOMContentLoaded', () => {
-            // Load quotes
-            loadQuotes();
-
-            // Event listeners
-            elements.aiToggle.addEventListener('change', (e) => {
-                state.aiMode = e.target.checked;
-                // If there's already a search term, redo the search
-                if (elements.searchInput.value.trim()) {
-                    handleSearch();
-                }
-            });
+            // For testing, we'll use the sample data instead of loading from a file
+            // Remove this when deploying with your actual quotes.json
+            simulateQuotesLoad();
 
             elements.searchInput.addEventListener('input', debounce(handleSearch, 300));
+
+            elements.refreshBtn.addEventListener('click', () => {
+                refreshQuotes();
+            });
         });
 
-        // Load quotes from JSON file
+        // For testing purposes only
+        function simulateQuotesLoad() {
+            elements.loading.style.display = 'block';
+            setTimeout(() => {
+                state.quotes = sampleQuotes;
+                processQuotes();
+                elements.loading.style.display = 'none';
+            }, 500);
+        }
+
+        function refreshQuotes() {
+            loadQuotes();
+            showToast("Quotes refreshed successfully");
+        }
+
         async function loadQuotes() {
             try {
-                const response = await fetch("quotes.json");
+                elements.loading.style.display = 'block';
+                const response = await fetch("quotes.json?v=" + new Date().getTime());
                 state.quotes = await response.json();
-
-                // Flatten quotes for easier access
-                state.flatQuotes = [];
-                const topicSet = new Set();
-
-                state.quotes.forEach(entry => {
-                    entry.statements.forEach((item, index) => {
-                        if (!item.id) {
-                            item.id = entry.ref.replace(/\s+/g, '') + "-" + index;
-                        }
-
-                        // Extract topics from tags or keywords
-                        const topics = [];
-                        if (item.tags && Array.isArray(item.tags)) {
-                            item.tags.forEach(tag => {
-                                topics.push(tag);
-                                topicSet.add(tag);
-                            });
-                        }
-                        if (item.keywords && Array.isArray(item.keywords)) {
-                            item.keywords.forEach(keyword => {
-                                topics.push(keyword);
-                                topicSet.add(keyword);
-                            });
-                        }
-
-                        state.flatQuotes.push({
-                            ...item,
-                            ref: entry.ref,
-                            topics: topics
-                        });
-                    });
-                });
-
-                // Generate topic filters
-                state.filters.topics = Array.from(topicSet).sort();
-                renderFilters();
-
-                // Check if we have precomputed results
-                const savedPrecomputed = localStorage.getItem('precomputed_results');
-                if (savedPrecomputed) {
-                    try {
-                        state.precomputed = JSON.parse(savedPrecomputed);
-                        console.log("Loaded precomputed results for", Object.keys(state.precomputed).length, "queries");
-                    } catch (e) {
-                        console.error("Error parsing saved precomputed results:", e);
-                    }
-                }
-
-                // Show initial results
-                renderResults(state.flatQuotes.slice(0, 20));
+                processQuotes();
+                elements.loading.style.display = 'none';
             } catch (error) {
                 console.error("Error loading quotes:", error);
+                elements.loading.style.display = 'none';
                 elements.results.innerHTML = `<div class="error">Error loading quotes: ${error.message}</div>`;
             }
         }
 
-        // Render topic filters
-        function renderFilters() {
-            // Take only the most common topics (up to 15)
-            const topTopics = state.filters.topics.slice(0, 15);
+        function processQuotes() {
+            state.flatQuotes = [];
+            const topicSet = new Set();
 
+            state.quotes.forEach(entry => {
+                // Extract scripture, chapter, verse information for easier searching
+                const scriptureInfo = extractScriptureInfo(entry.ref);
+
+                entry.statements.forEach((item, index) => {
+                    if (!item.id) {
+                        item.id = entry.ref.replace(/\s+/g, '') + "-" + index;
+                    }
+
+                    const topics = [];
+                    if (item.tags && Array.isArray(item.tags)) {
+                        item.tags.forEach(tag => {
+                            topics.push(tag);
+                            topicSet.add(tag);
+                        });
+                    }
+                    if (item.keywords && Array.isArray(item.keywords)) {
+                        item.keywords.forEach(keyword => {
+                            topics.push(keyword);
+                            topicSet.add(keyword);
+                        });
+                    }
+
+                    state.flatQuotes.push({
+                        ...item,
+                        ref: entry.ref,
+                        topics: topics,
+                        scriptureCode: scriptureInfo.scriptureCode,
+                        chapter: scriptureInfo.chapter,
+                        verse: scriptureInfo.verse,
+                        speaker: entry.speaker || "",
+                        lecture: entry.lecture || ""
+                    });
+                });
+            });
+
+            state.filters.topics = Array.from(topicSet).sort();
+            renderFilters();
+            renderResults(state.flatQuotes);
+        }
+
+        function extractScriptureInfo(ref) {
+            const info = {
+                scriptureCode: "",
+                chapter: "",
+                verse: ""
+            };
+
+            // Common scripture abbreviations
+            const scripturePatterns = [
+                { pattern: /\bBG\b|Bhagavad-gītā|Bhagavad-gita/i, code: "BG" },
+                { pattern: /\bSB\b|Śrīmad-Bhāgavatam|Srimad-Bhagavatam/i, code: "SB" },
+                { pattern: /\bCC\b|Caitanya-caritāmṛta|Caitanya-caritamrta/i, code: "CC" },
+                { pattern: /\bNOD\b|Nectar of Devotion/i, code: "NOD" },
+                { pattern: /\bISO\b|Īśopaniṣad|Isopanisad/i, code: "ISO" }
+            ];
+
+            // Check for scripture code
+            for (const pattern of scripturePatterns) {
+                if (pattern.pattern.test(ref)) {
+                    info.scriptureCode = pattern.code;
+                    break;
+                }
+            }
+
+            // Extract chapter and verse numbers if they exist
+            const chapterVersePattern = /(\d+)\.(\d+)/;
+            const chapterVerseMatch = ref.match(chapterVersePattern);
+
+            if (chapterVerseMatch) {
+                info.chapter = chapterVerseMatch[1];
+                info.verse = chapterVerseMatch[2];
+            } else {
+                // Try to find just a chapter number
+                const chapterPattern = /chapter (\d+)|lecture on .* (\d+)/i;
+                const chapterMatch = ref.match(chapterPattern);
+
+                if (chapterMatch) {
+                    info.chapter = chapterMatch[1] || chapterMatch[2];
+                }
+            }
+
+            return info;
+        }
+
+        function renderFilters() {
+            const topTopics = state.filters.topics.slice(0, 15);
             elements.filtersContainer.innerHTML = '';
 
             topTopics.forEach(topic => {
@@ -414,7 +521,6 @@
                         chip.classList.add('active');
                     }
 
-                    // Re-run search with filters
                     handleSearch();
                 });
 
@@ -422,11 +528,9 @@
             });
         }
 
-        // Handle search
-        async function handleSearch() {
+        function handleSearch() {
             const searchTerm = elements.searchInput.value.trim();
 
-            // When there's no search term, show filtered results or initial results
             if (!searchTerm) {
                 if (state.filters.activeFilters.size > 0) {
                     const filteredResults = state.flatQuotes.filter(quote =>
@@ -434,201 +538,31 @@
                             state.filters.activeFilters.has(topic)
                         )
                     );
-                    renderResults(filteredResults.slice(0, 20));
+                    renderResults(filteredResults);
                 } else {
-                    renderResults(state.flatQuotes.slice(0, 20));
+                    renderResults(state.flatQuotes);
                 }
                 return;
             }
 
-            // Create cache key that includes active filters
-            const cacheKey = searchTerm + '|' + Array.from(state.filters.activeFilters).sort().join(',');
-
-            // Check if we have cached results for this search+filters combination
-            if (state.aiMode && state.precomputed[cacheKey]) {
-                console.log("Using cached results for:", cacheKey);
-                renderResults(state.precomputed[cacheKey]);
-                return;
-            }
-
-            if (state.aiMode) {
-                elements.loading.style.display = 'block';
-                elements.progressContainer.style.display = 'block';
-                elements.progressBar.style.width = '0%';
-
-                try {
-                    await aiSearch(searchTerm);
-                } catch (error) {
-                    console.error("AI search error:", error);
-                    elements.results.innerHTML = `
-                        <div class="error">
-                            AI search error: ${error.message}<br>
-                            Falling back to enhanced keyword search.
-                        </div>
-                    `;
-                    // Fall back to enhanced keyword search
-                    const results = enhancedKeywordSearch(searchTerm);
-                    renderResults(results);
-                } finally {
-                    elements.loading.style.display = 'none';
-                    elements.progressContainer.style.display = 'none';
-                }
-            } else {
-                // Enhanced keyword search
-                const results = enhancedKeywordSearch(searchTerm);
-                renderResults(results);
-            }
+            const results = enhancedSearch(searchTerm);
+            renderResults(results);
         }
 
-        // AI-powered search using sentence-transformers
-        async function aiSearch(searchTerm) {
-            // Use a more advanced model for better accuracy
-            const model = MODELS.advanced;
-
-            const batchSize = 10; // Process quotes in batches to show progress
-            const topResults = []; // Store the top matches
-
-            // Apply any active filters to narrow the search scope
-            let quotesToSearch = state.flatQuotes;
-            if (state.filters.activeFilters.size > 0) {
-                quotesToSearch = state.flatQuotes.filter(quote =>
-                    !quote.topics || quote.topics.some(topic =>
-                        state.filters.activeFilters.has(topic)
-                    )
-                );
-            }
-
-            // Create an array of all statements
-            const statements = quotesToSearch.map(q => q.statement);
-            const totalBatches = Math.ceil(statements.length / batchSize);
-
-            try {
-                // First, get embedding for the search query with enhanced prompt
-                const enhancedQuery = `Find quotes about: ${searchTerm}`;
-                const queryEmbedding = await getEmbedding(enhancedQuery, model);
-
-                // Process quotes in batches
-                for (let i = 0; i < statements.length; i += batchSize) {
-                    const batchStatements = statements.slice(i, i + batchSize);
-                    const batchQuotes = quotesToSearch.slice(i, i + batchSize);
-
-                    // Update progress
-                    const progress = Math.round((i / statements.length) * 100);
-                    elements.progressBar.style.width = `${progress}%`;
-
-                    // Get embeddings for this batch
-                    const batchEmbeddings = await getBatchEmbeddings(batchStatements, model);
-
-                    // Calculate similarities
-                    for (let j = 0; j < batchEmbeddings.length; j++) {
-                        const similarity = cosineSimilarity(queryEmbedding, batchEmbeddings[j]);
-                        topResults.push({
-                            ...batchQuotes[j],
-                            score: similarity
-                        });
-                    }
-                }
-
-                // Sort by similarity score (highest first)
-                topResults.sort((a, b) => b.score - a.score);
-
-                // Keep only the top results with a reasonable similarity
-                const results = topResults
-                    .filter(r => r.score > SEMANTIC_THRESHOLD)
-                    .slice(0, 20);
-
-                // Cache the results with the filters included in the key
-                const cacheKey = searchTerm + '|' + Array.from(state.filters.activeFilters).sort().join(',');
-                state.precomputed[cacheKey] = results;
-
-                // Limit cache size to prevent memory issues
-                if (Object.keys(state.precomputed).length > 100) {
-                    const oldestKey = Object.keys(state.precomputed)[0];
-                    delete state.precomputed[oldestKey];
-                }
-
-                localStorage.setItem('precomputed_results', JSON.stringify(state.precomputed));
-
-                // Display results
-                renderResults(results);
-
-                // Complete the progress bar
-                elements.progressBar.style.width = '100%';
-
-            } catch (error) {
-                console.error("Error in AI search:", error);
-                throw error;
-            }
-        }
-
-        // Get embedding using the FREE Hugging Face API (no key required)
-        async function getEmbedding(text, model) {
-            try {
-                const response = await fetch(
-                    `https://api-inference.huggingface.co/pipeline/feature-extraction/${model}`,
-                    {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ inputs: text, options: { wait_for_model: true } })
-                    }
-                );
-
-                if (!response.ok) {
-                    throw new Error(`API request failed with status ${response.status}`);
-                }
-
-                return await response.json();
-            } catch (error) {
-                console.error("Error getting embedding:", error);
-                throw error;
-            }
-        }
-
-        // Get embeddings for multiple texts
-        async function getBatchEmbeddings(texts, model) {
-            try {
-                const response = await fetch(
-                    `https://api-inference.huggingface.co/pipeline/feature-extraction/${model}`,
-                    {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({ inputs: texts, options: { wait_for_model: true } })
-                    }
-                );
-
-                if (!response.ok) {
-                    throw new Error(`API request failed with status ${response.status}`);
-                }
-
-                return await response.json();
-            } catch (error) {
-                console.error("Error getting batch embeddings:", error);
-                throw error;
-            }
-        }
-
-        // Enhanced keyword search with contextual understanding
-        function enhancedKeywordSearch(query) {
+        function enhancedSearch(query) {
             query = query.toLowerCase();
-
-            // Split query into words and phrases
             let keywords = [];
             let phrases = [];
-
-            // Extract quoted phrases
             const phraseRegex = /"([^"]*)"/g;
             let match;
+
             while ((match = phraseRegex.exec(query)) !== null) {
                 phrases.push(match[1].toLowerCase());
             }
 
-            // Remove the quoted phrases from the query
             const remainingQuery = query.replace(/"([^"]*)"/g, '').trim();
+            keywords = remainingQuery.split(/\s+/).filter(k => k.length > 0); // Allow shorter keywords
 
-            // Split remaining text into keywords
-            keywords = remainingQuery.split(/\s+/).filter(k => k.length > 2);
-
-            // Apply filters first if any
             let quotesToSearch = state.flatQuotes;
             if (state.filters.activeFilters.size > 0) {
                 quotesToSearch = state.flatQuotes.filter(quote =>
@@ -638,41 +572,84 @@
                 );
             }
 
+            // Check for scripture reference pattern like "BG 4.11"
+            const scriptureReferencePattern = /^(bg|sb|cc|iso)\s*(\d+)(?:\.(\d+))?$/i;
+            const scriptureRefMatch = query.match(scriptureReferencePattern);
+
+            if (scriptureRefMatch) {
+                const scriptureCode = scriptureRefMatch[1].toUpperCase();
+                const chapter = scriptureRefMatch[2];
+                const verse = scriptureRefMatch[3] || "";
+
+                return quotesToSearch.filter(quote => {
+                    if (quote.scriptureCode === scriptureCode) {
+                        if (verse) {
+                            return quote.chapter === chapter && quote.verse === verse;
+                        } else {
+                            return quote.chapter === chapter;
+                        }
+                    }
+                    return false;
+                });
+            }
+
             return quotesToSearch
                 .map(quote => {
                     const statement = quote.statement.toLowerCase();
+                    const refText = quote.ref.toLowerCase();
                     let score = 0;
 
-                    // Check each phrase (highest priority)
+                    // Check reference directly
+                    if (refText.includes(query)) {
+                        score += 15;
+                    }
+
+                    // Check for scripture code match (e.g., "BG", "SB")
+                    if (quote.scriptureCode && query.toUpperCase() === quote.scriptureCode) {
+                        score += 15;
+                    }
+
+                    // Score phrases in statement
                     phrases.forEach(phrase => {
                         if (statement.includes(phrase)) {
-                            score += 10;  // Phrases get high priority
+                            score += 10;
                         }
                     });
 
-                    // Check each keyword
+                    // Score keywords in statement
                     keywords.forEach(keyword => {
-                        // Full word match
                         const wordRegex = new RegExp(`\\b${keyword}\\b`, 'i');
                         if (wordRegex.test(statement)) {
-                            score += 3;  // Full word match gets higher score
+                            score += 3;
                         }
-                        // Partial match
                         else if (statement.includes(keyword)) {
                             score += 1;
                         }
+
+                        // Check keywords in reference
+                        if (refText.includes(keyword)) {
+                            score += 4;
+                        }
+
+                        // Check keywords in speaker
+                        if (quote.speaker && quote.speaker.toLowerCase().includes(keyword)) {
+                            score += 3;
+                        }
+
+                        // Check keywords in lecture
+                        if (quote.lecture && quote.lecture.toLowerCase().includes(keyword)) {
+                            score += 3;
+                        }
                     });
 
-                    // Check whole query as a concept
                     if (statement.includes(remainingQuery)) {
-                        score += 5;  // Bonus for containing the whole query
+                        score += 5;
                     }
 
-                    // Check tags and keywords if available
                     if (quote.tags) {
                         [...keywords, ...phrases].forEach(term => {
                             if (quote.tags.some(tag => tag.toLowerCase().includes(term))) {
-                                score += 2;  // Tags are important for topic matching
+                                score += 2;
                             }
                         });
                     }
@@ -680,26 +657,20 @@
                     if (quote.keywords) {
                         [...keywords, ...phrases].forEach(term => {
                             if (quote.keywords.some(k => k.toLowerCase().includes(term))) {
-                                score += 2;  // Keywords are important for concept matching
+                                score += 2;
                             }
                         });
                     }
 
-                    // Normalize score relative to query complexity
-                    const queryComplexity = keywords.length + (phrases.length * 2);
-                    const normalizedScore = queryComplexity > 0 ? score / queryComplexity : score;
-
                     return {
                         ...quote,
-                        score: normalizedScore
+                        score: score
                     };
                 })
                 .filter(item => item.score > 0)
-                .sort((a, b) => b.score - a.score)
-                .slice(0, 20);  // Limit to top 20 results
+                .sort((a, b) => b.score - a.score);
         }
 
-        // Render search results
         function renderResults(data) {
             elements.results.innerHTML = "";
 
@@ -712,25 +683,15 @@
                 const card = document.createElement("div");
                 card.className = "quote-card";
 
-                // Prepare text for display
                 const statementText = item.statement;
                 const refText = item.ref;
-
-                // Create a relevance indicator that makes sense
-                let relevanceText = '';
-                if (item.score !== undefined) {
-                    const relevanceCategory = getRelevanceCategory(item.score);
-                    relevanceText = `<div class="relevance">${relevanceCategory}</div>`;
-                }
 
                 card.innerHTML = `
                     <div class="statement">"${statementText}"</div>
                     <div class="ref">— ${refText}</div>
-                    ${relevanceText}
                     <button class="copy-btn" title="Copy quote"><i class="fas fa-copy"></i></button>
                 `;
 
-                // Add copy functionality
                 card.querySelector('.copy-btn').addEventListener('click', (e) => {
                     e.stopPropagation();
                     copyToClipboard(`"${statementText}" — ${refText}`);
@@ -740,23 +701,10 @@
             });
         }
 
-        // Convert numeric score to meaningful relevance category
-        function getRelevanceCategory(score) {
-            if (score >= 0.9) return "Perfect match";
-            if (score >= 0.8) return "Very high relevance";
-            if (score >= 0.7) return "High relevance";
-            if (score >= 0.6) return "Good match";
-            if (score >= 0.5) return "Relevant";
-            if (score >= 0.4) return "Somewhat relevant";
-            return "Possible match";
-        }
-
-        // Copy text to clipboard with visual feedback
         function copyToClipboard(text) {
             navigator.clipboard.writeText(text)
                 .then(() => showToast("Quote copied to clipboard"))
                 .catch(() => {
-                    // Fallback for browsers that don't support clipboard API
                     const textArea = document.createElement("textarea");
                     textArea.value = text;
                     textArea.style.position = "fixed";
@@ -775,7 +723,6 @@
                 });
         }
 
-        // Show toast notification
         function showToast(message) {
             const toast = document.getElementById('toast');
             toast.textContent = message;
@@ -786,15 +733,6 @@
             }, 3000);
         }
 
-        // Calculate cosine similarity between two vectors
-        function cosineSimilarity(vecA, vecB) {
-            const dotProduct = vecA.reduce((sum, val, i) => sum + val * vecB[i], 0);
-            const magA = Math.sqrt(vecA.reduce((sum, val) => sum + val * val, 0));
-            const magB = Math.sqrt(vecB.reduce((sum, val) => sum + val * val, 0));
-            return dotProduct / (magA * magB);
-        }
-
-        // Debounce function
         function debounce(func, wait) {
             let timeout;
             return function (...args) {
