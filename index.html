@@ -19,8 +19,8 @@
             --accent-hover: #ffea97;
             --header-height: 70px;
             --search-height: 140px;
-            --superman-color: #ff69b4;
-            --lilaamrita-color: #00ffff;
+            --Superman 🦸‍♂️💥⚡🌟-color: #ff69b4;
+            --Lila-Amrita ✨💫🌸💖🌟-color: #00ffff;
             --btn-bg: rgba(255, 213, 79, 0.15);
             --btn-border: rgba(255, 213, 79, 0.3);
         }
@@ -137,12 +137,12 @@
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
         }
 
-        .quote-card.superman {
-            border-left: 4px solid var(--superman-color);
+        .quote-card.Superman 🦸‍♂️💥⚡🌟 {
+            border-left: 4px solid var(--Superman 🦸‍♂️💥⚡🌟-color);
         }
 
-        .quote-card.lilaamrita {
-            border-left: 4px solid var(--lilaamrita-color);
+        .quote-card.Lila-Amrita ✨💫🌸💖🌟 {
+            border-left: 4px solid var(--Lila-Amrita ✨💫🌸💖🌟-color);
         }
 
         .statement {
@@ -301,26 +301,26 @@
             box-shadow: 0 2px 6px rgba(255, 213, 79, 0.3);
         }
 
-        .filter-chip[data-topic="superman"] {
+        .filter-chip[data-topic="Superman 🦸‍♂️💥⚡🌟"] {
             background: rgba(255, 105, 180, 0.15);
             border-color: rgba(255, 105, 180, 0.3);
         }
 
-        .filter-chip[data-topic="superman"]:hover,
-        .filter-chip[data-topic="superman"].active {
-            background: var(--superman-color);
+        .filter-chip[data-topic="Superman 🦸‍♂️💥⚡🌟"]:hover,
+        .filter-chip[data-topic="Superman 🦸‍♂️💥⚡🌟"].active {
+            background: var(--Superman 🦸‍♂️💥⚡🌟-color);
             color: #000;
             box-shadow: 0 2px 6px rgba(255, 105, 180, 0.3);
         }
 
-        .filter-chip[data-topic="lilaamrita"] {
+        .filter-chip[data-topic="Lila-Amrita ✨💫🌸💖🌟"] {
             background: rgba(0, 255, 255, 0.15);
             border-color: rgba(0, 255, 255, 0.3);
         }
 
-        .filter-chip[data-topic="lilaamrita"]:hover,
-        .filter-chip[data-topic="lilaamrita"].active {
-            background: var(--lilaamrita-color);
+        .filter-chip[data-topic="Lila-Amrita ✨💫🌸💖🌟"]:hover,
+        .filter-chip[data-topic="Lila-Amrita ✨💫🌸💖🌟"].active {
+            background: var(--Lila-Amrita ✨💫🌸💖🌟-color);
             color: #000;
             box-shadow: 0 2px 6px rgba(0, 255, 255, 0.3);
         }
@@ -449,7 +449,7 @@
             flatQuotes: [],
             commonWords: {},
             filters: {
-                topics: ["superman", "lilaamrita"],
+                topics: ["Superman 🦸‍♂️💥⚡🌟", "Lila-Amrita ✨💫🌸💖🌟"],
                 activeFilters: new Set()
             }
         };
@@ -487,13 +487,13 @@
             } catch (error) {
                 console.error("Error loading quotes:", error);
                 elements.loading.style.display = 'none';
-                elements.results.innerHTML = `<div class="error">Error loading quotes: ${error.message}</div>`;
+                elements.results. = `<div class="error">Error loading quotes: ${error.message}</div>`;
             }
         }
 
         function processQuotes() {
             state.flatQuotes = [];
-            const topicSet = new Set(["superman", "lilaamrita"]);
+            const topicSet = new Set(["Superman 🦸‍♂️💥⚡🌟", "Lila-Amrita ✨💫🌸💖🌟"]);
             const wordMap = {};
 
             state.quotes.forEach(entry => {
@@ -582,7 +582,7 @@
 
         function renderFilters() {
             elements.filtersContainer.innerHTML = '';
-            const primaryFilters = ["Superman 🦸‍♂️💥⚡🌟", "Lilaamrita ✨💫🌸💖🌟"];
+            const primaryFilters = ["Superman 🦸‍♂️💥⚡🌟", "Lila-Amrita ✨💫🌸💖🌟"];
 
             primaryFilters.forEach(topic => {
                 const chip = document.createElement('div');
@@ -609,7 +609,7 @@
 
         function handleSearch() {
             const searchTerm = elements.searchInput.value.trim();
-            elements.suggestions.innerHTML = '';
+            elements.suggestions. = '';
 
             if (!searchTerm) {
                 if (state.filters.activeFilters.size > 0) {
@@ -632,7 +632,7 @@
                 if (suggestions.length) {
                     const suggestionEl = document.createElement('div');
                     suggestionEl.className = 'suggestion';
-                    suggestionEl.innerHTML = `Did you mean: ${suggestions.map(s =>
+                    suggestionEl. = `Did you mean: ${suggestions.map(s =>
                         `<span class="suggestion-word" data-word="${s}">${s}</span>`).join(', ')}?`;
                     elements.suggestions.appendChild(suggestionEl);
 
@@ -785,10 +785,10 @@
         }
 
         function renderResults(data) {
-            elements.results.innerHTML = "";
+            elements.results. = "";
 
             if (data.length === 0) {
-                elements.results.innerHTML = "<div class='no-results'>No matching quotes found</div>";
+                elements.results. = "<div class='no-results'>No matching quotes found</div>";
                 return;
             }
 
@@ -797,11 +797,11 @@
                 card.className = "quote-card";
 
                 if (item.tags) {
-                    if (item.tags.includes("superman")) card.classList.add("superman");
-                    else if (item.tags.includes("lilaamrita")) card.classList.add("lilaamrita");
+                    if (item.tags.includes("Superman 🦸‍♂️💥⚡🌟")) card.classList.add("Superman 🦸‍♂️💥⚡🌟");
+                    else if (item.tags.includes("Lila-Amrita ✨💫🌸💖🌟")) card.classList.add("Lila-Amrita ✨💫🌸💖🌟");
                 }
 
-                card.innerHTML = `
+                card. = `
                     <div class="statement">"${item.statement}"</div>
                     <div class="ref">— ${item.ref}</div>
                     <button class="copy-btn" title="Copy quote"><i class="fas fa-copy"></i></button>
