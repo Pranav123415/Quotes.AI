@@ -19,8 +19,8 @@
             --accent-hover: #ffea97;
             --header-height: 70px;
             --search-height: 140px;
-            --Superman 🦸‍♂️💥⚡🌟-color: #ff69b4;
-            --Lila-Amrita ✨💫🌸💖🌟-color: #00ffff;
+            --superman-color: #ff69b4;
+            --lila-amrita-color: #00ffff;
             --btn-bg: rgba(255, 213, 79, 0.15);
             --btn-border: rgba(255, 213, 79, 0.3);
         }
@@ -137,12 +137,12 @@
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
         }
 
-        .quote-card.Superman 🦸‍♂️💥⚡🌟 {
-            border-left: 4px solid var(--Superman 🦸‍♂️💥⚡🌟-color);
+        .quote-card.superman {
+            border-left: 4px solid var(--superman-color);
         }
 
-        .quote-card.Lila-Amrita ✨💫🌸💖🌟 {
-            border-left: 4px solid var(--Lila-Amrita ✨💫🌸💖🌟-color);
+        .quote-card.lila-amrita {
+            border-left: 4px solid var(--lila-amrita-color);
         }
 
         .statement {
@@ -301,26 +301,26 @@
             box-shadow: 0 2px 6px rgba(255, 213, 79, 0.3);
         }
 
-        .filter-chip[data-topic="Superman 🦸‍♂️💥⚡🌟"] {
+        .filter-chip[data-topic="superman"] {
             background: rgba(255, 105, 180, 0.15);
             border-color: rgba(255, 105, 180, 0.3);
         }
 
-        .filter-chip[data-topic="Superman 🦸‍♂️💥⚡🌟"]:hover,
-        .filter-chip[data-topic="Superman 🦸‍♂️💥⚡🌟"].active {
-            background: var(--Superman 🦸‍♂️💥⚡🌟-color);
+        .filter-chip[data-topic="superman"]:hover,
+        .filter-chip[data-topic="superman"].active {
+            background: var(--superman-color);
             color: #000;
             box-shadow: 0 2px 6px rgba(255, 105, 180, 0.3);
         }
 
-        .filter-chip[data-topic="Lila-Amrita ✨💫🌸💖🌟"] {
+        .filter-chip[data-topic="lila-amrita"] {
             background: rgba(0, 255, 255, 0.15);
             border-color: rgba(0, 255, 255, 0.3);
         }
 
-        .filter-chip[data-topic="Lila-Amrita ✨💫🌸💖🌟"]:hover,
-        .filter-chip[data-topic="Lila-Amrita ✨💫🌸💖🌟"].active {
-            background: var(--Lila-Amrita ✨💫🌸💖🌟-color);
+        .filter-chip[data-topic="lila-amrita"]:hover,
+        .filter-chip[data-topic="lila-amrita"].active {
+            background: var(--lila-amrita-color);
             color: #000;
             box-shadow: 0 2px 6px rgba(0, 255, 255, 0.3);
         }
@@ -449,7 +449,7 @@
             flatQuotes: [],
             commonWords: {},
             filters: {
-                topics: ["Superman 🦸‍♂️💥⚡🌟", "Lila-Amrita ✨💫🌸💖🌟"],
+                topics: ["superman", "lila-amrita"],
                 activeFilters: new Set()
             }
         };
@@ -487,13 +487,13 @@
             } catch (error) {
                 console.error("Error loading quotes:", error);
                 elements.loading.style.display = 'none';
-                elements.results. = `<div class="error">Error loading quotes: ${error.message}</div>`;
+                elements.results.innerHTML = `<div class="error">Error loading quotes: ${error.message}</div>`;
             }
         }
 
         function processQuotes() {
             state.flatQuotes = [];
-            const topicSet = new Set(["Superman 🦸‍♂️💥⚡🌟", "Lila-Amrita ✨💫🌸💖🌟"]);
+            const topicSet = new Set(["superman", "lila-amrita"]);
             const wordMap = {};
 
             state.quotes.forEach(entry => {
@@ -505,9 +505,14 @@
                     const topics = [];
                     if (item.tags && Array.isArray(item.tags)) {
                         item.tags.forEach(tag => {
-                            topics.push(tag);
-                            topicSet.add(tag);
-                            addWordToMap(tag, wordMap);
+                            // Normalize tag names to remove emojis and spaces
+                            let normalizedTag = tag;
+                            if (tag.includes("Superman")) normalizedTag = "superman";
+                            if (tag.includes("Lila-Amrita")) normalizedTag = "lila-amrita";
+
+                            topics.push(normalizedTag);
+                            topicSet.add(normalizedTag);
+                            addWordToMap(normalizedTag, wordMap);
                         });
                     }
                     if (item.keywords && Array.isArray(item.keywords)) {
@@ -582,12 +587,18 @@
 
         function renderFilters() {
             elements.filtersContainer.innerHTML = '';
-            const primaryFilters = ["Superman 🦸‍♂️💥⚡🌟", "Lila-Amrita ✨💫🌸💖🌟"];
+            const primaryFilters = ["superman", "lila-amrita"];
+
+            // Text labels for display
+            const filterLabels = {
+                "superman": "Superman 🦸‍♂️",
+                "lila-amrita": "Lila-Amrita ✨"
+            };
 
             primaryFilters.forEach(topic => {
                 const chip = document.createElement('div');
                 chip.className = 'filter-chip';
-                chip.textContent = topic;
+                chip.textContent = filterLabels[topic] || topic;
                 chip.dataset.topic = topic;
 
                 if (state.filters.activeFilters.has(topic)) chip.classList.add('active');
@@ -609,7 +620,7 @@
 
         function handleSearch() {
             const searchTerm = elements.searchInput.value.trim();
-            elements.suggestions. = '';
+            elements.suggestions.innerHTML = '';
 
             if (!searchTerm) {
                 if (state.filters.activeFilters.size > 0) {
@@ -632,7 +643,7 @@
                 if (suggestions.length) {
                     const suggestionEl = document.createElement('div');
                     suggestionEl.className = 'suggestion';
-                    suggestionEl. = `Did you mean: ${suggestions.map(s =>
+                    suggestionEl.innerHTML = `Did you mean: ${suggestions.map(s =>
                         `<span class="suggestion-word" data-word="${s}">${s}</span>`).join(', ')}?`;
                     elements.suggestions.appendChild(suggestionEl);
 
@@ -785,10 +796,10 @@
         }
 
         function renderResults(data) {
-            elements.results. = "";
+            elements.results.innerHTML = "";
 
             if (data.length === 0) {
-                elements.results. = "<div class='no-results'>No matching quotes found</div>";
+                elements.results.innerHTML = "<div class='no-results'>No matching quotes found</div>";
                 return;
             }
 
@@ -796,12 +807,12 @@
                 const card = document.createElement("div");
                 card.className = "quote-card";
 
-                if (item.tags) {
-                    if (item.tags.includes("Superman 🦸‍♂️💥⚡🌟")) card.classList.add("Superman 🦸‍♂️💥⚡🌟");
-                    else if (item.tags.includes("Lila-Amrita ✨💫🌸💖🌟")) card.classList.add("Lila-Amrita ✨💫🌸💖🌟");
+                if (item.topics) {
+                    if (item.topics.includes("superman")) card.classList.add("superman");
+                    else if (item.topics.includes("lila-amrita")) card.classList.add("lila-amrita");
                 }
 
-                card. = `
+                card.innerHTML = `
                     <div class="statement">"${item.statement}"</div>
                     <div class="ref">— ${item.ref}</div>
                     <button class="copy-btn" title="Copy quote"><i class="fas fa-copy"></i></button>
