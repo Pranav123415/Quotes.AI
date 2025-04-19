@@ -7,6 +7,9 @@
     <title>Srila Prabhupada Quotes</title>
     <link rel="icon" href="favicon.ico?v=1" type="image/x-icon" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap"
+        rel="stylesheet">
     <style>
         :root {
             --bg-color: #121212;
@@ -14,8 +17,12 @@
             --text-color: #e0e0e0;
             --accent: #ffd54f;
             --accent-hover: #ffea97;
-            --header-height: 60px;
-            --search-height: 50px;
+            --header-height: 70px;
+            --search-height: 140px;
+            --superman-color: #ff69b4;
+            --lilaamrita-color: #00ffff;
+            --btn-bg: rgba(255, 213, 79, 0.15);
+            --btn-border: rgba(255, 213, 79, 0.3);
         }
 
         * {
@@ -25,28 +32,33 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background: var(--bg-color);
             color: var(--text-color);
             margin: 0;
             padding: 0;
             overflow-x: hidden;
             line-height: 1.6;
+            font-family: 'Montserrat', sans-serif;
         }
 
         .header {
             background-color: rgba(18, 18, 18, 0.95);
             backdrop-filter: blur(10px);
-            position: sticky;
+            position: fixed;
             top: 0;
+            left: 0;
+            right: 0;
             z-index: 100;
             padding: 1rem 0;
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            height: var(--header-height);
+            display: flex;
+            align-items: center;
         }
 
         .container {
-            max-width: 900px;
+            max-width: 800px;
             margin: 0 auto;
             padding: 0 1.5rem;
         }
@@ -54,14 +66,17 @@
         h1 {
             text-align: center;
             color: var(--accent);
-            margin-bottom: 1rem;
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             letter-spacing: 0.5px;
+            font-weight: 500;
+            font-family: 'Montserrat', sans-serif;
         }
 
         .search-container {
-            position: sticky;
+            position: fixed;
             top: var(--header-height);
+            left: 0;
+            right: 0;
             z-index: 90;
             background: var(--bg-color);
             padding: 1rem 0;
@@ -82,6 +97,7 @@
             background: rgba(255, 255, 255, 0.05);
             color: var(--text-color);
             font-size: 1rem;
+            font-family: 'Montserrat', sans-serif;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
             transition: all 0.3s ease;
         }
@@ -94,6 +110,7 @@
 
         input[type="text"]::placeholder {
             color: #aaa;
+            font-family: 'Montserrat', sans-serif;
         }
 
         .search-icon {
@@ -120,16 +137,27 @@
             box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
         }
 
+        .quote-card.superman {
+            border-left: 4px solid var(--superman-color);
+        }
+
+        .quote-card.lilaamrita {
+            border-left: 4px solid var(--lilaamrita-color);
+        }
+
         .statement {
             font-size: 1.15rem;
             margin-bottom: 0.8rem;
-            line-height: 1.6;
+            line-height: 1.7;
+            font-weight: 300;
+            font-family: 'Lora', serif;
         }
 
         .ref {
             font-size: 0.95rem;
             color: #bbb;
             font-style: italic;
+            font-family: 'Lora', serif;
         }
 
         #loading {
@@ -141,35 +169,63 @@
         }
 
         .content {
-            padding: 2rem 0;
-            min-height: calc(100vh - var(--header-height) - var(--search-height));
+            padding-top: calc(var(--header-height) + var(--search-height) + 1rem);
+            min-height: 100vh;
         }
 
         .btn {
-            background: linear-gradient(to right, var(--accent), #ffb300);
-            color: #000;
             border: none;
-            padding: 10px 20px;
-            font-size: 0.95rem;
+            padding: 8px 16px;
+            font-size: 0.85rem;
             border-radius: 30px;
             cursor: pointer;
-            font-weight: 600;
+            font-weight: 500;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
-            box-shadow: 0 4px 10px rgba(255, 213, 79, 0.3);
+            gap: 6px;
             transition: all 0.3s ease;
+            font-family: 'Montserrat', sans-serif;
         }
 
         .btn:hover {
-            background: linear-gradient(to right, var(--accent-hover), #ffc107);
-            box-shadow: 0 6px 12px rgba(255, 213, 79, 0.4);
             transform: translateY(-2px);
         }
 
         .btn i {
             font-size: 0.9rem;
+        }
+
+        .refresh-btn {
+            background: var(--btn-bg);
+            color: var(--accent);
+            border: 1px solid var(--btn-border);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .refresh-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 213, 79, 0.2), transparent);
+            transition: all 0.6s ease;
+            z-index: -1;
+        }
+
+        .refresh-btn:hover::before {
+            left: 100%;
+        }
+
+        .refresh-btn:hover {
+            background: rgba(255, 213, 79, 0.25);
+            border-color: rgba(255, 213, 79, 0.5);
+            box-shadow: 0 4px 12px rgba(255, 213, 79, 0.25);
         }
 
         .copy-btn {
@@ -204,38 +260,69 @@
             background: var(--accent);
             color: #000;
             padding: 12px 24px;
-            border-radius: 8px;
+            border-radius: 30px;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
             font-weight: 600;
             z-index: 1000;
             opacity: 0;
             transition: opacity 0.3s;
+            font-family: 'Montserrat', sans-serif;
         }
 
         .filters {
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 1.5rem;
+            gap: 8px;
+            margin-bottom: 1rem;
         }
 
         .filter-chip {
             background: rgba(255, 255, 255, 0.1);
             border-radius: 20px;
-            padding: 6px 14px;
-            font-size: 0.9rem;
+            padding: 5px 12px;
+            font-size: 0.85rem;
             cursor: pointer;
             transition: all 0.2s;
+            border: 1px solid transparent;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            font-family: 'Montserrat', sans-serif;
         }
 
         .filter-chip:hover {
             background: rgba(255, 213, 79, 0.2);
+            transform: translateY(-1px);
         }
 
         .filter-chip.active {
             background: var(--accent);
             color: #000;
             font-weight: 500;
+            box-shadow: 0 2px 6px rgba(255, 213, 79, 0.3);
+        }
+
+        .filter-chip[data-topic="superman"] {
+            background: rgba(255, 105, 180, 0.15);
+            border-color: rgba(255, 105, 180, 0.3);
+        }
+
+        .filter-chip[data-topic="superman"]:hover,
+        .filter-chip[data-topic="superman"].active {
+            background: var(--superman-color);
+            color: #000;
+            box-shadow: 0 2px 6px rgba(255, 105, 180, 0.3);
+        }
+
+        .filter-chip[data-topic="lilaamrita"] {
+            background: rgba(0, 255, 255, 0.15);
+            border-color: rgba(0, 255, 255, 0.3);
+        }
+
+        .filter-chip[data-topic="lilaamrita"]:hover,
+        .filter-chip[data-topic="lilaamrita"].active {
+            background: var(--lilaamrita-color);
+            color: #000;
+            box-shadow: 0 2px 6px rgba(0, 255, 255, 0.3);
         }
 
         .no-results {
@@ -243,27 +330,53 @@
             margin: 3rem 0;
             color: #888;
             font-size: 1.1rem;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .suggestion {
+            text-align: center;
+            margin: 1rem 0;
+            font-size: 0.95rem;
+            color: #aaa;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        .suggestion span {
+            color: var(--accent);
+            cursor: pointer;
+            font-weight: 500;
+            text-decoration: underline;
+            margin: 0 3px;
         }
 
         .actions {
             display: flex;
             justify-content: flex-end;
-            margin-bottom: 1rem;
         }
 
-        .refresh-btn {
-            background: linear-gradient(to right, #2c2c2c, #3c3c3c);
-            color: var(--accent);
-            border: 1px solid rgba(255, 213, 79, 0.3);
+        .search-filters-wrapper {
+            display: flex;
+            align-items: center;
+            margin-bottom: 0.5rem;
         }
 
-        .refresh-btn:hover {
-            background: linear-gradient(to right, #2a2a2a, #3a3a3a);
+        .search-filters-wrapper .search-wrapper {
+            flex: 1;
+            margin-bottom: 0;
+            margin-right: 10px;
+        }
+
+        .search-filters-wrapper .actions {
+            flex-shrink: 0;
         }
 
         @media (max-width: 768px) {
+            .container {
+                padding: 0 1rem;
+            }
+
             h1 {
-                font-size: 1.5rem;
+                font-size: 1.3rem;
             }
 
             .quote-card {
@@ -272,6 +385,24 @@
 
             .statement {
                 font-size: 1.05rem;
+            }
+
+            .search-filters-wrapper {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .search-filters-wrapper .search-wrapper {
+                margin-right: 0;
+                margin-bottom: 10px;
+            }
+
+            .actions {
+                justify-content: flex-end;
+            }
+
+            .content {
+                padding-top: calc(var(--header-height) + 160px);
             }
         }
     </style>
@@ -286,26 +417,26 @@
 
     <div class="search-container">
         <div class="container">
-            <div class="search-wrapper">
-                <input type="text" id="search" placeholder="Search by reference (BG, SB), keyword, or meaning..." />
-                <i class="fas fa-search search-icon"></i>
+            <div class="search-filters-wrapper">
+                <div class="search-wrapper">
+                    <input type="text" id="search" placeholder="Search by reference (BG, SB), keyword, or meaning..." />
+                    <i class="fas fa-search search-icon"></i>
+                </div>
+                <div class="actions">
+                    <button id="refreshBtn" class="btn refresh-btn">
+                        <i class="fas fa-sync-alt"></i> Refresh
+                    </button>
+                </div>
             </div>
 
-            <div class="filters" id="filters">
-                <!-- Filters will be generated dynamically -->
-            </div>
-
-            <div class="actions">
-                <button id="refreshBtn" class="btn refresh-btn">
-                    <i class="fas fa-sync-alt"></i> Refresh Quotes
-                </button>
-            </div>
+            <div class="filters" id="filters"></div>
         </div>
     </div>
 
     <div class="content">
         <div class="container">
             <div id="loading">Finding quotes...</div>
+            <div id="suggestions"></div>
             <div id="results"></div>
         </div>
     </div>
@@ -316,8 +447,9 @@
         const state = {
             quotes: [],
             flatQuotes: [],
+            commonWords: {},
             filters: {
-                topics: new Set(),
+                topics: ["superman", "lilaamrita"],
                 activeFilters: new Set()
             }
         };
@@ -326,69 +458,18 @@
             searchInput: document.getElementById('search'),
             loading: document.getElementById('loading'),
             results: document.getElementById('results'),
+            suggestions: document.getElementById('suggestions'),
             filtersContainer: document.getElementById('filters'),
             toast: document.getElementById('toast'),
             refreshBtn: document.getElementById('refreshBtn')
         };
 
-        // Sample data for testing - would be replaced by your actual quotes.json
-        const sampleQuotes = [
-            {
-                "ref": "Bhagavad-gītā 4.11",
-                "speaker": "Lord Kṛṣṇa",
-                "scripture": "BG",
-                "chapter": "4",
-                "verse": "11",
-                "statements": [
-                    {
-                        "statement": "As all surrender unto Me, I reward them accordingly. Everyone follows My path in all respects, O son of Pṛthā.",
-                        "tags": ["surrender", "reciprocation", "devotional service"],
-                        "keywords": ["surrender", "reward", "path"]
-                    }
-                ]
-            },
-            {
-                "ref": "Śrīla Prabhupāda lecture on Bg 2.48 in New York in 1966",
-                "speaker": "Śrīla Prabhupāda",
-                "date": "1966",
-                "location": "New York",
-                "lecture": "Lecture on Bg 2.48",
-                "statements": [
-                    {
-                        "statement": "You should not be anxious for the success or failure of the attempt you are making. Suppose you are working in a firm selling something. You go out and sincerely work. Suppose one day you get business worth 100,000 dollars, and another day you don't get any business. It doesn't matter, because your connection with the master is there and so you get your salary. When the profit is 100,000 dollars, you don't expect any profit, and when there is no business, there is no loss on your part. Siddhy-asiddhyoh.",
-                        "tags": ["karma", "duty", "detachment"],
-                        "keywords": ["success", "failure", "result", "salary", "master"]
-                    },
-                    {
-                        "statement": "I am going to my office to earn some money, because without money, my household affairs could not go on. I am thinking, 'This money is required, otherwise God's service will be stopped.' So while earning money in my office, my God consciousness is there. Therefore, even while earning, whatever the process may be, you are yoga-sthah, situated in yoga. You get some money and go to the market. You are thinking, 'Oh, this is a very nice thing. It can be offered to Lord Kṛṣṇa.' Just like sometimes you bring some fruit for me, thinking, out of your love, 'Swamiji will eat this and he will like it.' Out of love, you think of Swamiji, and Swamiji is thought of because he is in relation with God. So this is God consciousness. It is just like electricity. Anything connected with the powerhouse is surcharged with electricity.",
-                        "tags": ["yoga", "work", "God consciousness", "money"],
-                        "keywords": ["office", "earning", "Krishna", "Swamiji", "electricity"]
-                    }
-                ]
-            }
-        ];
-
         document.addEventListener('DOMContentLoaded', () => {
-            // For testing, we'll use the sample data instead of loading from a file
-            // Remove this when deploying with your actual quotes.json
-            simulateQuotesLoad();
-
+            loadQuotes();
             elements.searchInput.addEventListener('input', debounce(handleSearch, 300));
-
-            elements.refreshBtn.addEventListener('click', () => {
-                refreshQuotes();
-            });
+            elements.refreshBtn.addEventListener('click', refreshQuotes);
+            renderFilters();
         });
-
-        // For testing purposes only
-        function simulateQuotesLoad() {
-            elements.loading.style.display = 'block';
-            setTimeout(() => {
-                state.quotes = sampleQuotes;
-                processQuotes();
-                elements.loading.style.display = 'none';
-            }, 500);
-        }
 
         function refreshQuotes() {
             loadQuotes();
@@ -399,6 +480,7 @@
             try {
                 elements.loading.style.display = 'block';
                 const response = await fetch("quotes.json?v=" + new Date().getTime());
+                if (!response.ok) throw new Error(`Failed to load quotes: ${response.status}`);
                 state.quotes = await response.json();
                 processQuotes();
                 elements.loading.style.display = 'none';
@@ -411,28 +493,28 @@
 
         function processQuotes() {
             state.flatQuotes = [];
-            const topicSet = new Set();
+            const topicSet = new Set(["superman", "lilaamrita"]);
+            const wordMap = {};
 
             state.quotes.forEach(entry => {
-                // Extract scripture, chapter, verse information for easier searching
                 const scriptureInfo = extractScriptureInfo(entry.ref);
 
                 entry.statements.forEach((item, index) => {
-                    if (!item.id) {
-                        item.id = entry.ref.replace(/\s+/g, '') + "-" + index;
-                    }
+                    if (!item.id) item.id = entry.ref.replace(/\s+/g, '') + "-" + index;
 
                     const topics = [];
                     if (item.tags && Array.isArray(item.tags)) {
                         item.tags.forEach(tag => {
                             topics.push(tag);
                             topicSet.add(tag);
+                            addWordToMap(tag, wordMap);
                         });
                     }
                     if (item.keywords && Array.isArray(item.keywords)) {
                         item.keywords.forEach(keyword => {
                             topics.push(keyword);
                             topicSet.add(keyword);
+                            addWordToMap(keyword, wordMap);
                         });
                     }
 
@@ -446,22 +528,28 @@
                         speaker: entry.speaker || "",
                         lecture: entry.lecture || ""
                     });
+
+                    const words = item.statement.toLowerCase().split(/\W+/).filter(w => w.length > 3);
+                    words.forEach(word => addWordToMap(word, wordMap));
                 });
             });
 
             state.filters.topics = Array.from(topicSet).sort();
+            state.commonWords = wordMap;
             renderFilters();
             renderResults(state.flatQuotes);
         }
 
-        function extractScriptureInfo(ref) {
-            const info = {
-                scriptureCode: "",
-                chapter: "",
-                verse: ""
-            };
+        function addWordToMap(word, map) {
+            word = word.toLowerCase().trim();
+            if (word.length > 2) {
+                map[word] = (map[word] || 0) + 1;
+            }
+        }
 
-            // Common scripture abbreviations
+        function extractScriptureInfo(ref) {
+            const info = { scriptureCode: "", chapter: "", verse: "" };
+
             const scripturePatterns = [
                 { pattern: /\bBG\b|Bhagavad-gītā|Bhagavad-gita/i, code: "BG" },
                 { pattern: /\bSB\b|Śrīmad-Bhāgavatam|Srimad-Bhagavatam/i, code: "SB" },
@@ -470,7 +558,6 @@
                 { pattern: /\bISO\b|Īśopaniṣad|Isopanisad/i, code: "ISO" }
             ];
 
-            // Check for scripture code
             for (const pattern of scripturePatterns) {
                 if (pattern.pattern.test(ref)) {
                     info.scriptureCode = pattern.code;
@@ -478,7 +565,6 @@
                 }
             }
 
-            // Extract chapter and verse numbers if they exist
             const chapterVersePattern = /(\d+)\.(\d+)/;
             const chapterVerseMatch = ref.match(chapterVersePattern);
 
@@ -486,31 +572,25 @@
                 info.chapter = chapterVerseMatch[1];
                 info.verse = chapterVerseMatch[2];
             } else {
-                // Try to find just a chapter number
                 const chapterPattern = /chapter (\d+)|lecture on .* (\d+)/i;
                 const chapterMatch = ref.match(chapterPattern);
-
-                if (chapterMatch) {
-                    info.chapter = chapterMatch[1] || chapterMatch[2];
-                }
+                if (chapterMatch) info.chapter = chapterMatch[1] || chapterMatch[2];
             }
 
             return info;
         }
 
         function renderFilters() {
-            const topTopics = state.filters.topics.slice(0, 15);
             elements.filtersContainer.innerHTML = '';
+            const primaryFilters = ["superman", "lilaamrita"];
 
-            topTopics.forEach(topic => {
+            primaryFilters.forEach(topic => {
                 const chip = document.createElement('div');
                 chip.className = 'filter-chip';
                 chip.textContent = topic;
                 chip.dataset.topic = topic;
 
-                if (state.filters.activeFilters.has(topic)) {
-                    chip.classList.add('active');
-                }
+                if (state.filters.activeFilters.has(topic)) chip.classList.add('active');
 
                 chip.addEventListener('click', () => {
                     if (state.filters.activeFilters.has(topic)) {
@@ -520,7 +600,6 @@
                         state.filters.activeFilters.add(topic);
                         chip.classList.add('active');
                     }
-
                     handleSearch();
                 });
 
@@ -530,6 +609,7 @@
 
         function handleSearch() {
             const searchTerm = elements.searchInput.value.trim();
+            elements.suggestions.innerHTML = '';
 
             if (!searchTerm) {
                 if (state.filters.activeFilters.size > 0) {
@@ -546,7 +626,80 @@
             }
 
             const results = enhancedSearch(searchTerm);
+
+            if (results.length === 0) {
+                const suggestions = findSimilarWords(searchTerm);
+                if (suggestions.length) {
+                    const suggestionEl = document.createElement('div');
+                    suggestionEl.className = 'suggestion';
+                    suggestionEl.innerHTML = `Did you mean: ${suggestions.map(s =>
+                        `<span class="suggestion-word" data-word="${s}">${s}</span>`).join(', ')}?`;
+                    elements.suggestions.appendChild(suggestionEl);
+
+                    document.querySelectorAll('.suggestion-word').forEach(el => {
+                        el.addEventListener('click', () => {
+                            elements.searchInput.value = el.dataset.word;
+                            handleSearch();
+                        });
+                    });
+                }
+            }
+
             renderResults(results);
+        }
+
+        function findSimilarWords(word) {
+            word = word.toLowerCase();
+            if (word.length < 3) return [];
+
+            const allWords = Object.keys(state.commonWords).filter(w => w.length >= 3);
+            return allWords
+                .map(w => ({
+                    word: w,
+                    similarity: calculateSimilarity(word, w),
+                    frequency: state.commonWords[w]
+                }))
+                .filter(item => item.similarity > 0.6)
+                .sort((a, b) => b.similarity - a.similarity || b.frequency - a.frequency)
+                .slice(0, 3)
+                .map(item => item.word);
+        }
+
+        function calculateSimilarity(s1, s2) {
+            if (s1 === s2) return 1.0;
+            if (s1.length < 2 || s2.length < 2) return 0.0;
+
+            if (s1.includes(s2) || s2.includes(s1)) {
+                return 0.8;
+            }
+
+            let longer = s1, shorter = s2;
+            if (s1.length < s2.length) {
+                longer = s2;
+                shorter = s1;
+            }
+
+            const editDistance = levenshteinDistance(s1, s2);
+            return (longer.length - editDistance) / parseFloat(longer.length);
+        }
+
+        function levenshteinDistance(s1, s2) {
+            const costs = [];
+            for (let i = 0; i <= s1.length; i++) {
+                let lastValue = i;
+                for (let j = 0; j <= s2.length; j++) {
+                    if (i === 0) costs[j] = j;
+                    else if (j > 0) {
+                        let newValue = costs[j - 1];
+                        if (s1.charAt(i - 1) !== s2.charAt(j - 1))
+                            newValue = Math.min(Math.min(newValue, lastValue), costs[j]) + 1;
+                        costs[j - 1] = lastValue;
+                        lastValue = newValue;
+                    }
+                }
+                if (i > 0) costs[s2.length] = lastValue;
+            }
+            return costs[s2.length];
         }
 
         function enhancedSearch(query) {
@@ -561,7 +714,7 @@
             }
 
             const remainingQuery = query.replace(/"([^"]*)"/g, '').trim();
-            keywords = remainingQuery.split(/\s+/).filter(k => k.length > 0); // Allow shorter keywords
+            keywords = remainingQuery.split(/\s+/).filter(k => k.length > 0);
 
             let quotesToSearch = state.flatQuotes;
             if (state.filters.activeFilters.size > 0) {
@@ -572,7 +725,6 @@
                 );
             }
 
-            // Check for scripture reference pattern like "BG 4.11"
             const scriptureReferencePattern = /^(bg|sb|cc|iso)\s*(\d+)(?:\.(\d+))?$/i;
             const scriptureRefMatch = query.match(scriptureReferencePattern);
 
@@ -583,11 +735,8 @@
 
                 return quotesToSearch.filter(quote => {
                     if (quote.scriptureCode === scriptureCode) {
-                        if (verse) {
-                            return quote.chapter === chapter && quote.verse === verse;
-                        } else {
-                            return quote.chapter === chapter;
-                        }
+                        if (verse) return quote.chapter === chapter && quote.verse === verse;
+                        else return quote.chapter === chapter;
                     }
                     return false;
                 });
@@ -599,73 +748,37 @@
                     const refText = quote.ref.toLowerCase();
                     let score = 0;
 
-                    // Check reference directly
-                    if (refText.includes(query)) {
-                        score += 15;
-                    }
+                    if (refText.includes(query)) score += 15;
+                    if (quote.scriptureCode && query.toUpperCase() === quote.scriptureCode) score += 15;
 
-                    // Check for scripture code match (e.g., "BG", "SB")
-                    if (quote.scriptureCode && query.toUpperCase() === quote.scriptureCode) {
-                        score += 15;
-                    }
-
-                    // Score phrases in statement
                     phrases.forEach(phrase => {
-                        if (statement.includes(phrase)) {
-                            score += 10;
-                        }
+                        if (statement.includes(phrase)) score += 10;
                     });
 
-                    // Score keywords in statement
                     keywords.forEach(keyword => {
                         const wordRegex = new RegExp(`\\b${keyword}\\b`, 'i');
-                        if (wordRegex.test(statement)) {
-                            score += 3;
-                        }
-                        else if (statement.includes(keyword)) {
-                            score += 1;
-                        }
-
-                        // Check keywords in reference
-                        if (refText.includes(keyword)) {
-                            score += 4;
-                        }
-
-                        // Check keywords in speaker
-                        if (quote.speaker && quote.speaker.toLowerCase().includes(keyword)) {
-                            score += 3;
-                        }
-
-                        // Check keywords in lecture
-                        if (quote.lecture && quote.lecture.toLowerCase().includes(keyword)) {
-                            score += 3;
-                        }
+                        if (wordRegex.test(statement)) score += 3;
+                        else if (statement.includes(keyword)) score += 1;
+                        if (refText.includes(keyword)) score += 4;
+                        if (quote.speaker && quote.speaker.toLowerCase().includes(keyword)) score += 3;
+                        if (quote.lecture && quote.lecture.toLowerCase().includes(keyword)) score += 3;
                     });
 
-                    if (statement.includes(remainingQuery)) {
-                        score += 5;
-                    }
+                    if (statement.includes(remainingQuery)) score += 5;
 
                     if (quote.tags) {
                         [...keywords, ...phrases].forEach(term => {
-                            if (quote.tags.some(tag => tag.toLowerCase().includes(term))) {
-                                score += 2;
-                            }
+                            if (quote.tags.some(tag => tag.toLowerCase().includes(term))) score += 2;
                         });
                     }
 
                     if (quote.keywords) {
                         [...keywords, ...phrases].forEach(term => {
-                            if (quote.keywords.some(k => k.toLowerCase().includes(term))) {
-                                score += 2;
-                            }
+                            if (quote.keywords.some(k => k.toLowerCase().includes(term))) score += 2;
                         });
                     }
 
-                    return {
-                        ...quote,
-                        score: score
-                    };
+                    return { ...quote, score };
                 })
                 .filter(item => item.score > 0)
                 .sort((a, b) => b.score - a.score);
@@ -683,18 +796,20 @@
                 const card = document.createElement("div");
                 card.className = "quote-card";
 
-                const statementText = item.statement;
-                const refText = item.ref;
+                if (item.tags) {
+                    if (item.tags.includes("superman")) card.classList.add("superman");
+                    else if (item.tags.includes("lilaamrita")) card.classList.add("lilaamrita");
+                }
 
                 card.innerHTML = `
-                    <div class="statement">"${statementText}"</div>
-                    <div class="ref">— ${refText}</div>
+                    <div class="statement">"${item.statement}"</div>
+                    <div class="ref">— ${item.ref}</div>
                     <button class="copy-btn" title="Copy quote"><i class="fas fa-copy"></i></button>
                 `;
 
                 card.querySelector('.copy-btn').addEventListener('click', (e) => {
                     e.stopPropagation();
-                    copyToClipboard(`"${statementText}" — ${refText}`);
+                    copyToClipboard(`"${item.statement}" — ${item.ref}`);
                 });
 
                 elements.results.appendChild(card);
@@ -727,10 +842,7 @@
             const toast = document.getElementById('toast');
             toast.textContent = message;
             toast.style.opacity = 1;
-
-            setTimeout(() => {
-                toast.style.opacity = 0;
-            }, 3000);
+            setTimeout(() => { toast.style.opacity = 0; }, 3000);
         }
 
         function debounce(func, wait) {
