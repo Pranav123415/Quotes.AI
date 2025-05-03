@@ -8,9 +8,7 @@ const state = {
     },
     currentResults: [], // Store current results for filter operations
     auth: {
-        isAuthenticated: false,
-        validUsername: 'MohanaKrishnaDasa',
-        validPassword: 'AGTSP'
+        isAuthenticated: false
     },
     deletedQuotes: [], // Store deleted quotes for undo functionality
     isProcessing: false // Flag to prevent duplicate processing
@@ -95,7 +93,13 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     
-    // Check if user is already authenticated (from session storage)
+    // Listen for auth state changes
+    window.addEventListener('authStateChanged', (e) => {
+        state.auth.isAuthenticated = isAuthenticated();
+        updateAuthUI();
+    });
+    
+    // Check if user is already authenticated
     checkAuthStatus();
 });
 
@@ -128,42 +132,105 @@ function closeQuoteModal() {
     elements.password.value = '';
 }
 
+// Import Firebase auth functions
+import { signInWithEmail, signOutUser, isAuthenticated, isAdmin, auth } from './firebase-auth.js';
+
 // Authentication functions
-function handleLogin(e) {
+async function handleLogin(e) {
     e.preventDefault();
     
-    const username = elements.username.value.trim();
+    const email = elements.username.value.trim();
     const password = elements.password.value.trim();
     
-    if (username === state.auth.validUsername && password === state.auth.validPassword) {
-        state.auth.isAuthenticated = true;
-        sessionStorage.setItem('isAuthenticated', 'true');
+    try {
+        elements.loading.style.display = 'block';
+        const result = await signInWithEmail(email, password);
         
-        // Show quote form, hide login section
-        elements.loginSection.style.display = 'none';
-        elements.quoteForm.style.display = 'block';
-        
-        showToast('Login successful!');
-    } else {
-        showToast('Invalid username or password!');
+        if (result.success) {
+            state.auth.isAuthenticated = true;
+            
+            // Show quote form, hide login section
+            elements.loginSection.style.display = 'none';
+            elements.quoteForm.style.display = 'block';
+            
+            showToast('Login successful!');
+            updateAuthUI();
+        } else {
+            showToast('Invalid email or password!', 'error');
+        }
+    } catch (error) {
+        console.error('Login error:', error);
+        showToast('Login failed: ' + error.message, 'error');
+    } finally {
+        elements.loading.style.display = 'none';
     }
 }
 
-function handleLogout() {
-    state.auth.isAuthenticated = false;
-    sessionStorage.removeItem('isAuthenticated');
-    
-    // Show login section, hide quote form
-    elements.loginSection.style.display = 'block';
-    elements.quoteForm.style.display = 'none';
-    
-    showToast('Logged out successfully!');
+async function handleLogout() {
+    try {
+        elements.loading.style.display = 'block';
+        const result = await signOutUser();
+        
+        if (result.success) {
+            state.auth.isAuthenticated = false;
+            
+            // Show login section, hide quote form
+            elements.loginSection.style.display = 'block';
+            elements.quoteForm.style.display = 'none';
+            
+            showToast('Logged out successfully!');
+            updateAuthUI();
+        } else {
+            showToast('Logout failed: ' + result.error, 'error');
+        }
+    } catch (error) {
+        console.error('Logout error:', error);
+        showToast('Logout failed: ' + error.message, 'error');
+    } finally {
+        elements.loading.style.display = 'none';
+    }
 }
 
 function checkAuthStatus() {
-    const isAuthenticated = sessionStorage.getItem('isAuthenticated');
-    if (isAuthenticated === 'true') {
-        state.auth.isAuthenticated = true;
+    // Firebase Auth will handle this through the authStateChanged event
+    state.auth.isAuthenticated = isAuthenticated();
+    updateAuthUI();
+}
+
+function updateAuthUI() {
+    // Update UI based on authentication status
+    if (state.auth.isAuthenticated) {
+        // Show add quote button only for authenticated users
+        if (elements.addQuoteBtn) {
+            elements.addQuoteBtn.style.display = 'block';
+        }
+        
+        // Show logout button
+        if (elements.logoutBtn) {
+            elements.logoutBtn.style.display = 'block';
+        }
+        
+        // Update delete buttons on quotes
+        const deleteButtons = document.querySelectorAll('.delete-btn');
+        deleteButtons.forEach(btn => {
+            btn.style.display = 'block';
+        });
+    } else {
+        // Hide add quote button for non-authenticated users
+        if (elements.addQuoteBtn) {
+            elements.addQuoteBtn.style.display = 'none';
+        }
+        
+        // Hide logout button
+        if (elements.logoutBtn) {
+            elements.logoutBtn.style.display = 'none';
+        }
+        
+        // Hide delete buttons on quotes
+        const deleteButtons = document.querySelectorAll('.delete-btn');
+        deleteButtons.forEach(btn => {
+            btn.style.display = 'none';
+        });
     }
 }
 
@@ -350,10 +417,11 @@ function saveQuotesToLocalStorage() {
     }
 }
 
-// Load quotes from localStorage or server
+// Load quotes from Firebase through server API
 async function loadQuotes() {
     try {
         elements.loading.style.display = 'block';
+        elements.results.innerHTML = '<div class="loading-message">Loading quotes from Firebase...</div>';
         
         // Clear existing data to prevent duplicates
         state.quotes = [];
@@ -378,6 +446,7 @@ async function loadQuotes() {
             }
         } catch (serverError) {
             console.warn("Could not load from Firebase, using local storage fallback:", serverError);
+            elements.results.innerHTML += '<div class="error-message">Could not connect to Firebase. Using local storage.</div>';
             
             // If server fetch fails, try to load from localStorage
             const savedQuotes = localStorage.getItem('prabhupada_quotes');
@@ -390,6 +459,7 @@ async function loadQuotes() {
         }
         
         // If no localStorage data, fetch from file
+        elements.results.innerHTML += '<div class="error-message">No cached data found. Loading from local JSON file.</div>';
         const response = await fetch("quotes.json?v=" + new Date().getTime());
         if (!response.ok) throw new Error(`Failed to load quotes: ${response.status}`);
         state.quotes = await response.json();
@@ -406,6 +476,18 @@ async function loadQuotes() {
     }
 }
 
+// Function to get Firebase auth token
+async function getAuthToken() {
+    try {
+        const user = auth.currentUser;
+        if (!user) return null;
+        return await user.getIdToken();
+    } catch (error) {
+        console.error('Error getting auth token:', error);
+        return null;
+    }
+}
+
 // Function to save quote to Firebase
 async function saveQuoteToFile(newQuote) {
     try {
@@ -413,15 +495,22 @@ async function saveQuoteToFile(newQuote) {
         let serverSaveSuccessful = false;
         
         try {
+            // Get auth token
+            const token = await getAuthToken();
+            if (!token) {
+                throw new Error('Authentication token not available');
+            }
+            
             // Try to send the new quote to our server endpoint to save to Firebase
             const response = await fetch('/api/quotes', {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
                 body: JSON.stringify(newQuote),
                 // Add a timeout to prevent long waiting times if server is not available
-                signal: AbortSignal.timeout(5000) // 5 second timeout
+                signal: (AbortSignal && AbortSignal.timeout) ? AbortSignal.timeout(5000) : null // 5 second timeout with fallback
             });
             
             if (!response.ok) {
@@ -463,7 +552,7 @@ async function saveQuoteToFile(newQuote) {
         throw error; // Propagate error to caller
     }
 }
-}
+
 
 function processQuotes() {
     // Clear all existing data to prevent duplicates
@@ -673,9 +762,9 @@ function filterQuotesByClassAndTopic() {
 
 // Function to handle quote deletion
 async function deleteQuote(quoteId) {
-    // Check if user is authenticated
-    if (!state.auth.isAuthenticated) {
-        showToast('You must be logged in to delete quotes!', 'error');
+    // Check if user is authenticated and has admin privileges
+    if (!state.auth.isAuthenticated || !isAdmin()) {
+        showToast('You must be logged in with admin privileges to delete quotes!', 'error');
         return;
     }
     
@@ -699,14 +788,21 @@ async function deleteQuote(quoteId) {
         // Try to delete from server first
         let serverDeleteSuccessful = false;
         try {
+            // Get auth token
+            const token = await getAuthToken();
+            if (!token) {
+                throw new Error('Authentication token not available');
+            }
+            
             // Call the server's DELETE endpoint
             const response = await fetch(`/api/quotes/${quoteId}`, {
                 method: 'DELETE',
                 headers: {
-                    'Content-Type': 'application/json'
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
                 },
                 // Add a timeout to prevent long waiting times if server is not available
-                signal: AbortSignal.timeout(5000) // 5 second timeout
+                signal: (AbortSignal && AbortSignal.timeout) ? AbortSignal.timeout(5000) : null // 5 second timeout with fallback
             });
             
             if (!response.ok) {
@@ -725,72 +821,68 @@ async function deleteQuote(quoteId) {
         
         // Always update local state, but track if we need to sync later
         // This ensures UI is responsive even when Firebase operations fail
-            // Remove from flatQuotes
-            state.flatQuotes.splice(quoteIndex, 1);
-            
-            // Find and remove from quotes array
-            const quoteRef = deletedQuote.ref;
-            const statementId = deletedQuote.id;
-            
-            for (let i = 0; i < state.quotes.length; i++) {
-                const quote = state.quotes[i];
-                if (quote.ref === quoteRef) {
-                    // Find the statement within this quote
-                    const statementIndex = quote.statements.findIndex(stmt => stmt.id === statementId);
-                    if (statementIndex !== -1) {
-                        // Remove just this statement
-                        quote.statements.splice(statementIndex, 1);
-                        
-                        // If no statements left, remove the entire quote
-                        if (quote.statements.length === 0) {
-                            state.quotes.splice(i, 1);
-                        }
-                        break;
+        // Remove from flatQuotes
+        state.flatQuotes.splice(quoteIndex, 1);
+        
+        // Find and remove from quotes array
+        const quoteRef = deletedQuote.ref;
+        const statementId = deletedQuote.id;
+        
+        for (let i = 0; i < state.quotes.length; i++) {
+            const quote = state.quotes[i];
+            if (quote.ref === quoteRef) {
+                // Find the statement within this quote
+                const statementIndex = quote.statements.findIndex(stmt => stmt.id === statementId);
+                if (statementIndex !== -1) {
+                    // Remove just this statement
+                    quote.statements.splice(statementIndex, 1);
+                    
+                    // If no statements left, remove the entire quote
+                    if (quote.statements.length === 0) {
+                        state.quotes.splice(i, 1);
                     }
+                    break;
                 }
             }
-            
-            // Update current results and render
-            state.currentResults = state.flatQuotes;
-            renderResults(state.flatQuotes);
-            
-            // Save to localStorage
-            saveQuotesToLocalStorage();
-            
-            // If server delete failed but we're online, try to sync all quotes
-            if (!serverDeleteSuccessful && navigator.onLine) {
-                try {
-                    await saveQuotesToServer();
-                    console.log('Quote deleted successfully from server via fallback!');
-                    serverDeleteSuccessful = true;
-                } catch (fallbackError) {
-                    console.error("Fallback delete from server failed:", fallbackError);
-                }
-            }
-            
-            // Show undo button
-            if (elements.undoBtn) {
-                elements.undoBtn.style.display = 'block';
-                // Auto-hide after 10 seconds
-                setTimeout(() => {
-                    if (state.deletedQuotes.length > 0) {
-                        const oldestDeletion = state.deletedQuotes[0].timestamp;
-                        const now = Date.now();
-                        if (now - oldestDeletion > 10000) {
-                            state.deletedQuotes.shift(); // Remove oldest deletion
-                        }
-                        if (state.deletedQuotes.length === 0) {
-                            elements.undoBtn.style.display = 'none';
-                        }
-                    }
-                }, 10000);
-            }
-            
-            showToast(serverDeleteSuccessful ? "Quote deleted successfully!" : "Quote deleted from local storage only. Server unavailable.");
-        } else {
-            // If we couldn't delete from server and we're online, don't update local state
-            showToast("Failed to delete quote from server. Please try again.", "error");
         }
+        
+        // Update current results and render
+        state.currentResults = state.flatQuotes;
+        renderResults(state.flatQuotes);
+        
+        // Save to localStorage
+        saveQuotesToLocalStorage();
+        
+        // If server delete failed but we're online, try to sync all quotes
+        if (!serverDeleteSuccessful && navigator.onLine) {
+            try {
+                await saveQuotesToServer();
+                console.log('Quote deleted successfully from server via fallback!');
+                serverDeleteSuccessful = true;
+            } catch (fallbackError) {
+                console.error("Fallback delete from server failed:", fallbackError);
+            }
+        }
+        
+        // Show undo button
+        if (elements.undoBtn) {
+            elements.undoBtn.style.display = 'block';
+            // Auto-hide after 10 seconds
+            setTimeout(() => {
+                if (state.deletedQuotes.length > 0) {
+                    const oldestDeletion = state.deletedQuotes[0].timestamp;
+                    const now = Date.now();
+                    if (now - oldestDeletion > 10000) {
+                        state.deletedQuotes.shift(); // Remove oldest deletion
+                    }
+                    if (state.deletedQuotes.length === 0) {
+                        elements.undoBtn.style.display = 'none';
+                    }
+                }
+            }, 10000);
+        }
+        
+        showToast(serverDeleteSuccessful ? "Quote deleted successfully!" : "Quote deleted from local storage only. Server unavailable.");
     } catch (error) {
         console.error("Error deleting quote:", error);
         showToast("Error deleting quote. Please try again.", "error");
@@ -799,125 +891,23 @@ async function deleteQuote(quoteId) {
     }
 }
 
-// Function to handle undo of quote deletion
-async function handleUndo() {
-    if (state.deletedQuotes.length === 0) {
-        showToast('Nothing to undo!', 'error');
-        return;
-    }
-    
-    // Get the most recently deleted quote
-    const deletedItem = state.deletedQuotes.pop();
-    const deletedQuote = deletedItem.quote;
-    
-    // Find if the quote reference already exists
-    let quoteExists = false;
-    let existingQuoteIndex = -1;
-    
-    for (let i = 0; i < state.quotes.length; i++) {
-        if (state.quotes[i].ref === deletedQuote.ref) {
-            quoteExists = true;
-            existingQuoteIndex = i;
-            break;
-        }
-    }
-    
-    // Create statement object
-    const statement = {
-        statement: deletedQuote.statement,
-        tags: deletedQuote.tags || [],
-        keywords: deletedQuote.keywords || [],
-        id: deletedQuote.id
-    };
-    
-    let newQuote;
-    if (quoteExists) {
-        // Add statement to existing quote
-        state.quotes[existingQuoteIndex].statements.push(statement);
-    } else {
-        // Create new quote object
-        newQuote = {
-            ref: deletedQuote.ref,
-            speaker: deletedQuote.speaker || "",
-            date: deletedQuote.date || "",
-            location: deletedQuote.location || "",
-            lecture: deletedQuote.lecture || "",
-            statements: [statement]
-        };
-        state.quotes.push(newQuote);
-    }
-    
-    // Add back to flatQuotes
-    state.flatQuotes.push(deletedQuote);
-    
-    // Update current results and render
-    state.currentResults = state.flatQuotes;
-    renderResults(state.flatQuotes);
-    
-    // Save to localStorage
-    saveQuotesToLocalStorage();
-    
-    // Try to update server directly
-    let serverUpdateSuccessful = false;
-    try {
-        elements.loading.style.display = 'block';
-        
-        // If it's a new quote, try to add it directly
-        if (!quoteExists && newQuote) {
-            const response = await fetch('/api/quotes', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(newQuote),
-                signal: AbortSignal.timeout(5000) // 5 second timeout
-            });
-            
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || 'Failed to restore quote');
-            }
-        } else {
-            // Otherwise update all quotes
-            await saveQuotesToServer();
-        }
-        
-        console.log('Quote restored successfully to server!');
-        serverUpdateSuccessful = true;
-    } catch (serverError) {
-        console.warn("Could not restore to server, using local storage fallback:", serverError);
-        
-        // If direct method failed, try to sync all quotes
-        if (!serverUpdateSuccessful) {
-            try {
-                await saveQuotesToServer();
-                serverUpdateSuccessful = true;
-            } catch (fallbackError) {
-                console.error("Fallback save to server failed:", fallbackError);
-            }
-        }
-    } finally {
-        elements.loading.style.display = 'none';
-    }
-    
-    // Hide undo button if no more deleted quotes
-    if (state.deletedQuotes.length === 0 && elements.undoBtn) {
-        elements.undoBtn.style.display = 'none';
-    }
-    
-    showToast(serverUpdateSuccessful ? 'Quote restored successfully!' : 'Quote restored to local storage only. Server unavailable.');
-}
-
 // Function to save quotes to server
 async function saveQuotesToServer() {
     try {
         elements.loading.style.display = 'block';
         
+        // Get auth token
+        const token = await getAuthToken();
+        if (!token) {
+            throw new Error('Authentication token not available');
+        }
+        
         // Send the updated quotes to our server endpoint for Firebase update
         const response = await fetch('/api/quotes/update', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`
             },
             body: JSON.stringify(state.quotes)
         });
@@ -927,40 +917,28 @@ async function saveQuotesToServer() {
             throw new Error(errorData.message || 'Failed to save quotes');
         }
         
-        elements.loading.style.display = 'none';
         console.log('Quotes saved successfully to Firebase!');
+        return true;
     } catch (error) {
         console.error("Error saving quotes to Firebase:", error);
-        elements.loading.style.display = 'none';
         showToast("Error saving changes to Firebase. Your changes are saved locally.", "error");
-    }
-}
-
-// Function to delete a quote (already defined above - this is a duplicate)
-        }
-        
-        // Always update localStorage
-        saveQuotesToLocalStorage();
-        
-        // Refresh the quotes display
-        processQuotes();
-        
+        throw error;
+    } finally {
         elements.loading.style.display = 'none';
-        showToast("Quote deleted successfully!");
-    } catch (error) {
-        console.error("Error deleting quote:", error);
-        elements.loading.style.display = 'none';
-        showToast("Error deleting quote. Please try again.", "error");
     }
 }
 
 // Function to handle undo of deleted quote
 async function handleUndo() {
-    try {
-        if (state.deletedQuotes.length === 0) {
+    if (state.deletedQuotes.length === 0) {
+        if (elements.undoBtn) {
             elements.undoBtn.style.display = 'none';
-            return;
         }
+        showToast('Nothing to undo!', 'error');
+        return;
+    }
+    
+    try {
         
         elements.loading.style.display = 'block';
         
@@ -1019,7 +997,7 @@ async function handleUndo() {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(newQuote || state.quotes[existingQuoteIndex]),
-                    signal: AbortSignal.timeout(5000) // 5 second timeout
+                    signal: (AbortSignal && AbortSignal.timeout) ? AbortSignal.timeout(5000) : null // 5 second timeout with fallback
                 });
                 
                 if (!response.ok) {
@@ -1159,18 +1137,7 @@ function copyToClipboard(text) {
         });
 }
 
-function showToast(message, type = 'success') {
-    elements.toast.textContent = message;
-    elements.toast.className = 'toast'; // Reset classes
-    if (type === 'error') {
-        elements.toast.classList.add('error');
-    }
-    elements.toast.style.opacity = 1;
-
-    setTimeout(() => {
-        elements.toast.style.opacity = 0;
-    }, 3000);
-}
+// Using the existing showToast function defined at the top of the file
 
 function debounce(func, wait) {
     let timeout;

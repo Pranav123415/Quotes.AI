@@ -4,8 +4,36 @@ import { fileURLToPath } from 'url';
 import bodyParser from 'body-parser';
 import fs from 'fs';
 
+// Import Firebase admin for server-side authentication
+import * as admin from 'firebase-admin';
+import { getAuth } from 'firebase-admin/auth';
+
 // Import Firebase functions
 import { getQuotesFromFirebase, addQuoteToFirebase, deleteQuoteFromFirebase, updateAllQuotesInFirebase, migrateQuotesToFirebase } from './firebase.js';
+import { readFile } from 'fs/promises';
+
+// Initialize Firebase Admin SDK
+let serviceAccount;
+try {
+  // Use dynamic import for JSON in ES modules
+  const serviceAccountData = await readFile('./firebase-service-account.json', 'utf8');
+  serviceAccount = JSON.parse(serviceAccountData);
+} catch (error) {
+  console.error('Error loading service account:', error);
+  serviceAccount = process.env.FIREBASE_SERVICE_ACCOUNT 
+    ? JSON.parse(process.env.FIREBASE_SERVICE_ACCOUNT) 
+    : null;
+}
+
+if (!serviceAccount) {
+  console.warn('No service account found. Authentication will not work.');
+}
+
+const adminApp = admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount)
+});
+
+const adminAuth = getAuth(adminApp);
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -60,8 +88,26 @@ app.get('/api/quotes', async (req, res) => {
     }
 });
 
-// Route to handle adding a new quote
-app.post('/api/quotes', async (req, res) => {
+// Middleware to verify Firebase authentication
+const authenticateUser = async (req, res, next) => {
+    try {
+        const authHeader = req.headers.authorization;
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            return res.status(401).json({ success: false, message: 'Unauthorized: No token provided' });
+        }
+        
+        const idToken = authHeader.split('Bearer ')[1];
+        const decodedToken = await adminAuth.verifyIdToken(idToken);
+        req.user = decodedToken;
+        next();
+    } catch (error) {
+        console.error('Authentication error:', error);
+        return res.status(401).json({ success: false, message: 'Unauthorized: Invalid token', error: error.message });
+    }
+};
+
+// Route to handle adding a new quote (requires authentication)
+app.post('/api/quotes', authenticateUser, async (req, res) => {
     try {
         const newQuote = req.body;
         const addedQuote = await addQuoteToFirebase(newQuote);
@@ -72,8 +118,8 @@ app.post('/api/quotes', async (req, res) => {
     }
 });
 
-// Route to handle deleting a quote
-app.delete('/api/quotes/:quoteId', async (req, res) => {
+// Route to handle deleting a quote (requires authentication)
+app.delete('/api/quotes/:quoteId', authenticateUser, async (req, res) => {
     try {
         const quoteId = req.params.quoteId;
         await deleteQuoteFromFirebase(quoteId);
@@ -84,8 +130,8 @@ app.delete('/api/quotes/:quoteId', async (req, res) => {
     }
 });
 
-// Route to handle updating all quotes
-app.post('/api/quotes/update', async (req, res) => {
+// Route to handle updating all quotes (requires authentication)
+app.post('/api/quotes/update', authenticateUser, async (req, res) => {
     try {
         const updatedQuotes = req.body;
         
